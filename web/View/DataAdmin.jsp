@@ -17,13 +17,16 @@
 </head>
 <body>
     <table border ="1">
+        
         <thead>
+           
             <tr>
                 <th>ID ADMIN</th>
                 <th>NAMA ADMIN</th>
                 <th>ALAMAT</th>
                 <th>E-MAIL</th>
                 <th>NO.TELPON</th>
+                <th colspan="2">test</th>
             </tr>
         </thead>
         <%
@@ -40,14 +43,40 @@
                 <td><%=a.getAlamat()%></td>
                 <td><%=a.getEmail()%></td>
                 <td><%=a.getNoTelp()%></td>
+                <td><a href="adminupdate?id=<%=a.getIdAdmin()%>">update</a></td>
+                <td><a href="admindelete?id=<%=a.getIdAdmin()%>">delete</a></td>
             </tr>
-        </tbody>
         <% }
-        %>
+        
+            %>
+        </tbody>
+     </table>
+        
+        <form name="formupdate" action="admini" method="POST">
+           
+            <div class="form-group">
+                <label>ID Admin </label>
+                <input class="form-control" name="idAdmin"  type="text">
+            </div>
+            <div class="form-group">
+                <label>Nama Admin</label>
+                <input class="form-control" name="namaAdmin" type="text" value=""     >
+            </div>
+            <div class="form-group">
+                <label>Alamat</label>
+                <input class="form-control" name="alamat" type="text" value="">
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input class="form-control" name="email" type="text" value="">
+            </div>
+            <div class="form-group">
+                <label>No Telpon</label>
+                <input class="form-control" name="noTelp" type="text" value="">
+            </div>
+            <button> Simpan </button>
+                
+        </form>
 
-
-
-    </table>
-    <a href="..\asuransiservlet">test</a>
 </body>
 </html>

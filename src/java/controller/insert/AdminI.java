@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.insert;
 
-import DAO.AsuransiDAO;
-import DAO.PembayaranDAO;
+import DAO.AdminDAO;
+import entities.Admin;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-public class DataPembayaranServlet extends HttpServlet {
+@WebServlet(name = "AdminI", urlPatterns = {"/admini"})
+public class AdminI extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,16 +35,31 @@ public class DataPembayaranServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+       response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("idAdmin");
+        String nama = request.getParameter("namaAdmin");
+        String alamat = request.getParameter("alamat");
+        String email = request.getParameter("email");
+        String notelp = request.getParameter("noTelp");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-            HttpSession session = request.getSession(true);
+        AdminDAO adao = new AdminDAO();
+         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-            
-         List<Object> datas = new PembayaranDAO().getAll();
-            session.setAttribute("data_pembayaran", datas);
-            dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
-            dispatcher.forward(request, response);
-        
+           Admin a = new Admin();
+           a.setIdAdmin(id);
+           a.setNamaAdmin(nama);
+           a.setAlamat(alamat);
+           a.setEmail(email);
+           a.setNoTelp(notelp);
+
+            if (adao.insert(a)) {
+                pesan = "berhasil mengubah data dengan ID : "+a.getIdAdmin();
+                
+            }
+            session.setAttribute("pesaninsert", pesan);
+            dispatcher = request.getRequestDispatcher("dataadminservlet");
+            dispatcher.include(request, response);
         }
     }
 

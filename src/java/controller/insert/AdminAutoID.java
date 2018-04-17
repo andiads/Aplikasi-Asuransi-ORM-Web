@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.insert;
 
-import DAO.AsuransiDAO;
-import DAO.PembayaranDAO;
+import DAO.AdminDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +20,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-public class DataPembayaranServlet extends HttpServlet {
+@WebServlet(name = "AdminAutoID", urlPatterns = {"/adminautoid"})
+public class AdminAutoID extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +35,14 @@ public class DataPembayaranServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
         RequestDispatcher dispatcher = null;
-            HttpSession session = request.getSession(true);
+        AdminDAO adao = new AdminDAO();
         try (PrintWriter out = response.getWriter()) {
-            
-         List<Object> datas = new PembayaranDAO().getAll();
-            session.setAttribute("data_pembayaran", datas);
-            dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
-            dispatcher.forward(request, response);
-        
+            /* TODO output your page here. You may use following sample code. */
+           session.setAttribute("autoID",adao.getAutoID());
+           dispatcher = request.getRequestDispatcher("insert/DataAdmin.jsp");
+           dispatcher.forward(request, response);
         }
     }
 

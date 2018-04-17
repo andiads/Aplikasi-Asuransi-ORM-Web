@@ -36,37 +36,26 @@ public class DataAdminServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
+        RequestDispatcher dispatcher = null;
+        HttpSession session = request.getSession();
+        AdminDAO adao = new AdminDAO();
         try (PrintWriter out = response.getWriter()) {
-            RequestDispatcher dispatcher = null;
-            HttpSession session = request.getSession(true);
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet AsuransiServlet</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet AsuransiServlet at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
 
-
-                List<Object> datas = new AdminDAO().getAll();
-//                for (Object data : datas) {
-//                Admin a = (Admin) data;
-//                out.println("<br>"+a.getIdAdmin());
-//                out.println("<br>"+a.getNamaAdmin());
-//                out.println("<br>"+a.getAlamat());
-//                out.println("<br>"+a.getEmail());
-//                out.println("<br>"+a.getNoTelp());
-//            }
-
+            List<Object> datas = new AdminDAO().getAll();
+//          
+            if (session.getAttribute("pesan") != null) {
+                out.print(session.getAttribute("pesan") + "<br>");
+                session.removeAttribute("pesan");
+            }
+            if (session.getAttribute("pesaninsert") != null) {
+                out.print(session.getAttribute("pesaninsert") + "<br>");
+                session.removeAttribute("pesaninsert");
+            }
             session.setAttribute("data_admin", datas);
             dispatcher = request.getRequestDispatcher("View/DataAdmin.jsp");
-            dispatcher.forward(request, response);
-            
+            dispatcher.include(request, response);
+
         }
     }
 
