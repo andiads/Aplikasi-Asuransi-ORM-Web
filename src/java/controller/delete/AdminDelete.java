@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.delete;
 
 import DAO.AdminDAO;
-import DAO.AsuransiDAO;
-import DAO.NasabahDAO;
+import entities.Admin;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -21,10 +20,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "admindelete", urlPatterns = {"/admindelete"})
+public class AdminDelete extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +37,22 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("id");
         RequestDispatcher dispatcher = null;
+        String pesan = "data gagal dihapus";
+        AdminDAO adao = new AdminDAO();
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
-            }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
             
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
+            if (adao.delete(id)) {
+                pesan = "data berhasiil dihapus";
+            
+            }
+            session.setAttribute("pesan", pesan);
+            dispatcher = request.getRequestDispatcher("dataadminservlet");
             dispatcher.include(request, response);
+
+
         }
     }
 

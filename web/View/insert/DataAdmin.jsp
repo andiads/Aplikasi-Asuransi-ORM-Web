@@ -13,13 +13,14 @@
     </head>
     <body>
         <%
-            int autoid = (int)session.getAttribute("autoID");
+            String Admin = (String) session.getAttribute("autoID");
             %>
+     
         <form name="formupdate" action="admini" method="POST">
            
             <div class="form-group">
                 <label>ID Admin </label>
-                <input class="form-control" name="idAdmin" readonly="true" type="text" value="autoid">
+                <input class="form-control" name="idAdmin" readonly="true" type="text" value="<%=Admin%>">
             </div>
             <div class="form-group">
                 <label>Nama Admin</label>
@@ -31,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label>E-mail</label>
-                <input class="form-control" name="email" type="text" value="">
+                <input class="form-control" name="email" type="email" value="">
             </div>
             <div class="form-group">
                 <label>No Telpon</label>

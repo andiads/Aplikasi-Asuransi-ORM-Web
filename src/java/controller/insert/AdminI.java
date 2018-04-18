@@ -54,7 +54,7 @@ public class AdminI extends HttpServlet {
            a.setNoTelp(notelp);
 
             if (adao.insert(a)) {
-                pesan = "berhasil mengubah data dengan ID : "+a.getIdAdmin();
+                pesan = "berhasil menambah data dengan ID : "+a.getIdAdmin();
                 
             }
             session.setAttribute("pesaninsert", pesan);

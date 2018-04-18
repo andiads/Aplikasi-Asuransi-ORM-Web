@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "AdminAutoID", urlPatterns = {"/adminautoid"})
-public class AdminAutoID extends HttpServlet {
+@WebServlet(name = "AdmintoInsert", urlPatterns = {"/admintoinsert"})
+public class AdmintoInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,9 @@ public class AdminAutoID extends HttpServlet {
         RequestDispatcher dispatcher = null;
         AdminDAO adao = new AdminDAO();
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-           session.setAttribute("autoID",adao.getAutoID());
-           dispatcher = request.getRequestDispatcher("insert/DataAdmin.jsp");
-           dispatcher.forward(request, response);
+            session.setAttribute("autoID",adao.getAutoID());
+           dispatcher = request.getRequestDispatcher("View/insert/DataAdmin.jsp");
+            dispatcher.forward(request, response);
         }
     }
 

@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.update;
+package controller.insert;
 
 import DAO.AdminDAO;
+import DAO.AsuransiDAO;
 import entities.Admin;
+import entities.Asuransi;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,8 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "adminupdate", urlPatterns = {"/adminupdate"})
-public class admin extends HttpServlet {
+@WebServlet(name = "AsuransiInsert", urlPatterns = {"/asuransiinsert"})
+public class AsuransiInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,17 +38,25 @@ public class admin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
+        String kodeasuransi = request.getParameter("kdasuransi");
+        String jenisasuransi = request.getParameter("jenisasuransi");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        HttpSession session = request.getSession();
+        AsuransiDAO adao = new AsuransiDAO();
+         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
-               Admin admin = (Admin) new AdminDAO().getById(id);
-            session.setAttribute("admin", admin);
-            out.println("<font color=\"red\"> update "+admin.getIdAdmin()+"</font>");
-        dispatcher = request.getRequestDispatcher("View/update/DataAdmin.jsp");
-        dispatcher.include(request, response);
+           Asuransi asuransi = new Asuransi();
+           
+           asuransi.setKodeAsuransi(kodeasuransi);
+           asuransi.setJenisAsuransi(jenisasuransi);
+
+            if (adao.insert(asuransi)) {
+                pesan = "berhasil mengubah data dengan ID : "+asuransi.getKodeAsuransi();
+                
+            }
+            session.setAttribute("pesaninsert", pesan);
+            dispatcher = request.getRequestDispatcher("dataasuransiservlet");
+            dispatcher.include(request, response);
         }
     }
 

@@ -3,14 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.insert;
 
-import DAO.AdminDAO;
 import DAO.AsuransiDAO;
 import DAO.NasabahDAO;
+import controller.update.UpdateNasabah;
+import entities.Admin;
+import entities.Asuransi;
+import entities.Nasabah;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +28,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "NasabahInsert", urlPatterns = {"/nasabahinsert"})
+public class NasabahInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,22 +45,42 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String nik = request.getParameter("nik");
+        String nmrpolis = request.getParameter("nmrpolis");
+        String namanasabah = request.getParameter("nmnasabah");
+        String tgllahir = request.getParameter("tgllahir");
+        String pekerjaan = request.getParameter("pekerjaan");
+        String alamat = request.getParameter("alamat");
+        String status = request.getParameter("status");
+        String penghasilan = request.getParameter("penghasilan");
+        String idadmin = request.getParameter("idadmin");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        HttpSession session = request.getSession();
+        NasabahDAO ndao = new NasabahDAO();
+         HttpSession session = request.getSession();
+         Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tgllahir);
+        } catch (ParseException ex) {
+            Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
+           Nasabah nasabah = new Nasabah();
+           nasabah.setNik(nik);
+           nasabah.setNoPolis(nmrpolis);
+           nasabah.setNmNasabah(namanasabah);
+           nasabah.setTglLahir(date1);
+           nasabah.setPekerjaan(pekerjaan);
+           nasabah.setAlamat(alamat);
+           nasabah.setStatus(status);
+           nasabah.setPengBulan(penghasilan);
+           nasabah.setIdAdmin(new Admin(idadmin));
+            if (ndao.insert(nasabah)) {
+                pesan = "berhasil mengubah data dengan ID : "+nasabah.getNoPolis();
+                
             }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
-            
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
+            session.setAttribute("pesaninsert", pesan);
+            dispatcher = request.getRequestDispatcher("nasabahServlet");
             dispatcher.include(request, response);
         }
     }

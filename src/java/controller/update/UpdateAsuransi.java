@@ -3,28 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.update;
 
 import DAO.AdminDAO;
 import DAO.AsuransiDAO;
-import DAO.NasabahDAO;
+import entities.Admin;
+import entities.Asuransi;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "UpdateAsuransi", urlPatterns = {"/updateasuransi"})
+public class UpdateAsuransi extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +37,24 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("kodeasuransi");
+        String jenis = request.getParameter("jenisasuransi");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        HttpSession session = request.getSession();
+        AsuransiDAO adao = new AsuransiDAO();
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
+            /* TODO output your page here. You may use following sample code. */
+           Asuransi asuransi = new Asuransi(id);
+           asuransi.setJenisAsuransi(jenis);
+//           adao.update(a);
+           
+            if (adao.update(asuransi)) {
+                pesan = "berhasil mengubah data dengan ID : "+asuransi.getKodeAsuransi();
+                
             }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
-            
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
-            dispatcher.include(request, response);
+            out.print(pesan);
+            dispatcher = request.getRequestDispatcher("dataasuransiservlet");
+            dispatcher.forward(request, response);
         }
     }
 

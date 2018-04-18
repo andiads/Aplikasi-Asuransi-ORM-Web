@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label>E-mail</label>
-                <input class="form-control" name="email" type="text" value="<%= a.getEmail()%>">
+                <input class="form-control" name="email" type="email" value="<%= a.getEmail()%>">
             </div>
             <div class="form-group">
                 <label>No Telpon</label>

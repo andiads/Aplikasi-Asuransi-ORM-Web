@@ -3,28 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.insert;
 
-import DAO.AdminDAO;
-import DAO.AsuransiDAO;
-import DAO.NasabahDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "NasabahtoInsert", urlPatterns = {"/nasabahtoinsert"})
+public class NasabahtoInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,22 +34,10 @@ public class NasabahServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher dispatcher = null;
-        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
-            }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
-            
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
-            dispatcher.include(request, response);
+            /* TODO output your page here. You may use following sample code. */
+           dispatcher = request.getRequestDispatcher("View/insert/DataNasabah.jsp");
+            dispatcher.forward(request, response);
         }
     }
 

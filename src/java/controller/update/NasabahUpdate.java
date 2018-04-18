@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.update;
 
-import DAO.AdminDAO;
 import DAO.AsuransiDAO;
 import DAO.NasabahDAO;
+import entities.Asuransi;
+import entities.Nasabah;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +21,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "NasabahUpdate", urlPatterns = {"/nasabahupdate"})
+public class NasabahUpdate extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +38,17 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String id = request.getParameter("id");
         RequestDispatcher dispatcher = null;
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
-            }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
+            /* TODO output your page here. You may use following sample code. */
             
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
-            dispatcher.include(request, response);
+               Nasabah nasabah = (Nasabah) new NasabahDAO().getById(id);
+            session.setAttribute("nasabah", nasabah);
+            out.println("<font color=\"red\"> update "+nasabah.getNoPolis()+"</font>");
+        dispatcher = request.getRequestDispatcher("View/update/DataNasabah.jsp");
+        dispatcher.include(request, response);
         }
     }
 

@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.update;
 
 import DAO.AdminDAO;
+import DAO.AsuransiDAO;
 import entities.Admin;
+import entities.Asuransi;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -15,13 +17,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author dbayu
  */
-@WebServlet(name = "fixupdate", urlPatterns = {"/fixupdate"})
-public class fixupdate extends HttpServlet {
+@WebServlet(name = "AsuransiUpdate", urlPatterns = {"/asuransiupdate"})
+public class AsuransiUpdate extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,34 +38,19 @@ public class fixupdate extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("idAdmin");
-        String nama = request.getParameter("namaAdmin");
-        String alamat = request.getParameter("alamat");
-        String email = request.getParameter("email");
-        String notelp = request.getParameter("noTelp");
-        String pesan = "gagal mengubah data";
+        String id = request.getParameter("id");
         RequestDispatcher dispatcher = null;
-        AdminDAO adao = new AdminDAO();
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           Admin a = new Admin(id);
-           a.setNamaAdmin(nama);
-           a.setAlamat(alamat);
-           a.setEmail(email);
-           a.setNoTelp(notelp);
-//           adao.update(a);
-           
-            if (adao.update(a)) {
-                pesan = "berhasil mengubah data dengan ID : "+a.getIdAdmin();
-                
-            }
-            out.print(pesan);
-            dispatcher = request.getRequestDispatcher("View/DataAdmin.jsp");
-            dispatcher.forward(request, response);
+            
+               Asuransi asuransi = (Asuransi) new AsuransiDAO().getById(id);
+            session.setAttribute("asuransi", asuransi);
+            out.println("<font color=\"red\"> update "+asuransi.getKodeAsuransi()+"</font>");
+        dispatcher = request.getRequestDispatcher("View/update/DataAsuransi.jsp");
+        dispatcher.include(request, response);
         }
     }
-    
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -40,6 +40,10 @@ public class DataPembayaranServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
          List<Object> datas = new PembayaranDAO().getAll();
+         if (session.getAttribute("pesaninsert") != null) {
+                out.print(session.getAttribute("pesaninsert") + "<br>");
+                session.removeAttribute("pesaninsert");
+            }
             session.setAttribute("data_pembayaran", datas);
             dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
             dispatcher.forward(request, response);

@@ -16,6 +16,7 @@
     </title>
 </head>
 <body>
+    <a href="admintoinsert" class="Button">Tambah data</a>
     <table border ="1">
         
         <thead>
@@ -52,31 +53,7 @@
         </tbody>
      </table>
         
-        <form name="formupdate" action="admini" method="POST">
-           
-            <div class="form-group">
-                <label>ID Admin </label>
-                <input class="form-control" name="idAdmin"  type="text">
-            </div>
-            <div class="form-group">
-                <label>Nama Admin</label>
-                <input class="form-control" name="namaAdmin" type="text" value=""     >
-            </div>
-            <div class="form-group">
-                <label>Alamat</label>
-                <input class="form-control" name="alamat" type="text" value="">
-            </div>
-            <div class="form-group">
-                <label>E-mail</label>
-                <input class="form-control" name="email" type="text" value="">
-            </div>
-            <div class="form-group">
-                <label>No Telpon</label>
-                <input class="form-control" name="noTelp" type="text" value="">
-            </div>
-            <button> Simpan </button>
-                
-        </form>
+        
 
 </body>
 </html>

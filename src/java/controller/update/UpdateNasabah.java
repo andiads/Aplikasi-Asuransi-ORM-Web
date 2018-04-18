@@ -3,27 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.delete;
-
-import DAO.AdminDAO;
+package controller.update;
+import DAO.NasabahDAO;
 import entities.Admin;
+import entities.Nasabah;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author dbayu
  */
-@WebServlet(name = "admindelete", urlPatterns = {"/admindelete"})
-public class admin extends HttpServlet {
+@WebServlet(name = "UpdateNasabah", urlPatterns = {"/updatenasabah"})
+public class UpdateNasabah extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,22 +40,45 @@ public class admin extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("id");
+        String nik = request.getParameter("nik");
+        String nmrpolis = request.getParameter("nmrpolis");
+        String nmnasabah = request.getParameter("nmnasabah");
+        String tgllahir = request.getParameter("tgllahir");
+        String pekerjaan = request.getParameter("pekerjaan");
+        String alamat = request.getParameter("alamat");
+        String status = request.getParameter("status");
+        String penghasilan = request.getParameter("penghasilan");
+        String idadmin = request.getParameter("idadmin");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        String pesan = "data gagal dihapus";
-        AdminDAO adao = new AdminDAO();
-        HttpSession session = request.getSession();
+        NasabahDAO ndao = new NasabahDAO();
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tgllahir);
+        } catch (ParseException ex) {
+            Logger.getLogger(UpdateNasabah.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try (PrintWriter out = response.getWriter()) {
-            
-            if (adao.delete(id)) {
-                pesan = "data berhasiil dihapus";
-            
+           
+           Nasabah nasabah = new Nasabah(nmrpolis);
+           nasabah.setNik(nik);
+           nasabah.setNmNasabah(nmnasabah);
+           nasabah.setTglLahir(date1);
+           nasabah.setPekerjaan(pekerjaan);
+           nasabah.setAlamat(alamat);
+           nasabah.setStatus(status);
+           nasabah.setIdAdmin(new Admin(idadmin));
+           nasabah.setPengBulan(penghasilan);
+           
+
+           
+            if (ndao.update(nasabah)) {
+                pesan = "berhasil mengubah data dengan ID : "+nasabah.getNoPolis();
+                
             }
-            session.setAttribute("pesan", pesan);
-            dispatcher = request.getRequestDispatcher("dataadminservlet");
-            dispatcher.include(request, response);
-
-
+            out.print(pesan);
+            dispatcher = request.getRequestDispatcher("nasabahServlet");
+            dispatcher.forward(request, response);
         }
     }
 

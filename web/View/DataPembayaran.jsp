@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    <a href="pembayarantoinsert" class="Button">Bayar Asuransi</a>
     <body>
         <table border="1">
             <thead>
@@ -22,6 +23,7 @@
                     <th>Kode Asuransi</th>
                     <th>Jenis Asuransi</th>
                     <th>Tanggal Bayar</th>
+                    
                 </tr>
             </thead>
              <%
@@ -39,6 +41,7 @@
                     <td><%= a.getKodeAsuransi()%></td>
                     <td><%= a.getKodeAsuransi().getJenisAsuransi()%></td>
                     <td><%= a.getTglPembayaran()%></td>
+                    
                 </tr>
             </tbody>
             <%

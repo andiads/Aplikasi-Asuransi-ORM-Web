@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.delete;
 
-import DAO.AdminDAO;
 import DAO.AsuransiDAO;
 import DAO.NasabahDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +19,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "NasabahDelete", urlPatterns = {"/nasabahdelete"})
+public class NasabahDelete extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +36,23 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+         String id = request.getParameter("id");
         RequestDispatcher dispatcher = null;
+        String pesan = "data gagal dihapus";
+        NasabahDAO ndao = new NasabahDAO();
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
-            }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
             
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
+            if (ndao.delete(id)) {
+                pesan = "data berhasiil dihapus";
+            
+            }
+            session.setAttribute("pesandelete", pesan);
+            dispatcher = request.getRequestDispatcher("nasabahServlet");
             dispatcher.include(request, response);
+
+
+        
         }
     }
 

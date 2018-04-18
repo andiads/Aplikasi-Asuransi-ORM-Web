@@ -56,4 +56,8 @@ public class AsuransiDAO implements InterfaceDAO{
     public Object getById(String id) {
         return fdao.getById("from Asuransi where kodeAsuransi='" + id + "'");
     }
+    
+    public String getAutoID(){
+        return (String) fdao.getById("SELECT CONCAT('A', LPAD((TO_NUMBER(SUBSTR(MAX(kodeAsuransi),2,3))+1), 3, '0'))FROM Asuransi");
+    }
 }

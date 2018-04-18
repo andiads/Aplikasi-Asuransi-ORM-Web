@@ -3,14 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.insert;
 
-import DAO.AdminDAO;
 import DAO.AsuransiDAO;
-import DAO.NasabahDAO;
+import DAO.PembayaranDAO;
+import entities.Asuransi;
+import entities.Nasabah;
+import entities.Pembayaran;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,10 +27,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Toshiba
+ * @author dbayu
  */
-@WebServlet(name = "NasabahServlet", urlPatterns = {"/nasabahServlet"})
-public class NasabahServlet extends HttpServlet {
+@WebServlet(name = "PembayaranInsert", urlPatterns = {"/pembayaraninsert"})
+public class PembayaranInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,22 +44,34 @@ public class NasabahServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String nopembayaran = request.getParameter("nmrpembayaran");
+        String tglpembayaran = request.getParameter("tglpembayaran");
+        String jmlpembayaran = request.getParameter("jmlbayar");
+        String nopolis = request.getParameter("nmrpolis");
+        String kodeasuransi = request.getParameter("kdasuransi");
+        String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        HttpSession session = request.getSession();
+        PembayaranDAO pdao = new PembayaranDAO();
+         HttpSession session = request.getSession();
+         Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-mm-dd").parse(tglpembayaran);
+        } catch (ParseException ex) {
+            Logger.getLogger(PembayaranInsert.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try (PrintWriter out = response.getWriter()) {
-         
-            List<Object> datas = new NasabahDAO().getAll();
-            if (session.getAttribute("pesandelete") != null) {
-                out.print(session.getAttribute("pesandelete") + "<br>");
-                session.removeAttribute("pesandelete");
+           Pembayaran pembayaran = new Pembayaran();
+           pembayaran.setNoPembayaran(nopembayaran);
+           pembayaran.setTglPembayaran(date1);
+           pembayaran.setJmlhBayar(Long.parseLong(jmlpembayaran));
+           pembayaran.setNoPolis(new Nasabah(nopolis));
+           pembayaran.setKodeAsuransi(new Asuransi(kodeasuransi));
+            if (pdao.insert(pembayaran)) {
+                pesan = "berhasil mengubah data dengan ID : "+pembayaran.getNoPembayaran();
+                
             }
-            if (session.getAttribute("pesaninsert") != null) {
-                out.print(session.getAttribute("pesaninsert") + "<br>");
-                session.removeAttribute("pesaninsert");
-            }
-            
-            session.setAttribute("dataNasabah", datas);
-            dispatcher = request.getRequestDispatcher("View/nasabah.jsp");
+            session.setAttribute("pesaninsert", pesan);
+            dispatcher = request.getRequestDispatcher("datapembayaranservlet");
             dispatcher.include(request, response);
         }
     }

@@ -36,12 +36,21 @@ public class DataAsuransiServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher dispatcher = null;
             HttpSession session = request.getSession(true);
+            AsuransiDAO adao = new AsuransiDAO();
         try (PrintWriter out = response.getWriter()) {
 
             List<Object> datas = new AsuransiDAO().getAll();
+            if (session.getAttribute("pesandelete") != null) {
+                out.print(session.getAttribute("pesandelete") + "<br>");
+                session.removeAttribute("pesandelete");
+            }
+            if (session.getAttribute("pesaninsert") != null) {
+                out.print(session.getAttribute("pesaninsert") + "<br>");
+                session.removeAttribute("pesaninsert");
+            }
             session.setAttribute("data_asuransi", datas);
             dispatcher = request.getRequestDispatcher("View/DataAsuransi.jsp");
-            dispatcher.forward(request, response);
+            dispatcher.include(request, response);
         }
     }
 
