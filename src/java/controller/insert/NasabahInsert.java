@@ -80,7 +80,7 @@ public class NasabahInsert extends HttpServlet {
                 
             }
             session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("nasabahServlet");
+            dispatcher = request.getRequestDispatcher("pembayarantoinsert");
             dispatcher.include(request, response);
         }
     }

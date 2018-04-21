@@ -12,6 +12,7 @@ import entities.Nasabah;
 import entities.Pembayaran;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +50,7 @@ public class PembayaranInsert extends HttpServlet {
         String jmlpembayaran = request.getParameter("jmlbayar");
         String nopolis = request.getParameter("nmrpolis");
         String kodeasuransi = request.getParameter("kdasuransi");
+        String Saldo = request.getParameter("Saldo");
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         PembayaranDAO pdao = new PembayaranDAO();
@@ -66,6 +68,7 @@ public class PembayaranInsert extends HttpServlet {
            pembayaran.setJmlhBayar(Long.parseLong(jmlpembayaran));
            pembayaran.setNoPolis(new Nasabah(nopolis));
            pembayaran.setKodeAsuransi(new Asuransi(kodeasuransi));
+           pembayaran.setSaldo(new BigInteger(Saldo));
             if (pdao.insert(pembayaran)) {
                 pesan = "berhasil mengubah data dengan ID : "+pembayaran.getNoPembayaran();
                 

@@ -7,6 +7,7 @@ package tools;
 
 import DAO.AdminDAO;
 import DAO.AsuransiDAO;
+import DAO.PembayaranDAO;
 import entities.Admin;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class Cek {
             
 //        }
 
-        AsuransiDAO adao = new AsuransiDAO();
-        System.out.println(adao.getAutoID());
-        
-        AdminDAO dAO = new AdminDAO();
+//        AsuransiDAO adao = new AsuransiDAO();
+//        System.out.println(adao.getAutoID());
+//        
+        PembayaranDAO dAO = new PembayaranDAO();
         System.out.println(dAO.getAutoID());
     }
     

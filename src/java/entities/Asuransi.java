@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,7 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Asuransi.findAll", query = "SELECT a FROM Asuransi a")
     , @NamedQuery(name = "Asuransi.findByKodeAsuransi", query = "SELECT a FROM Asuransi a WHERE a.kodeAsuransi = :kodeAsuransi")
-    , @NamedQuery(name = "Asuransi.findByJenisAsuransi", query = "SELECT a FROM Asuransi a WHERE a.jenisAsuransi = :jenisAsuransi")})
+    , @NamedQuery(name = "Asuransi.findByJenisAsuransi", query = "SELECT a FROM Asuransi a WHERE a.jenisAsuransi = :jenisAsuransi")
+    , @NamedQuery(name = "Asuransi.findByBunga", query = "SELECT a FROM Asuransi a WHERE a.bunga = :bunga")
+    , @NamedQuery(name = "Asuransi.findByJmlBayar", query = "SELECT a FROM Asuransi a WHERE a.jmlBayar = :jmlBayar")
+    , @NamedQuery(name = "Asuransi.findByMasaBerlaku", query = "SELECT a FROM Asuransi a WHERE a.masaBerlaku = :masaBerlaku")})
 public class Asuransi implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +43,14 @@ public class Asuransi implements Serializable {
     private String kodeAsuransi;
     @Column(name = "JENIS_ASURANSI")
     private String jenisAsuransi;
+    @Column(name = "BUNGA")
+    private BigInteger bunga;
+    @Column(name = "JML_BAYAR")
+    private BigInteger jmlBayar;
+    @Column(name = "MASA_BERLAKU")
+    private String masaBerlaku;
+    @OneToMany(mappedBy = "kodeAsuransi", fetch = FetchType.LAZY)
+    private List<Klaim> klaimList;
     @OneToMany(mappedBy = "kodeAsuransi", fetch = FetchType.LAZY)
     private List<Pembayaran> pembayaranList;
 
@@ -63,6 +75,39 @@ public class Asuransi implements Serializable {
 
     public void setJenisAsuransi(String jenisAsuransi) {
         this.jenisAsuransi = jenisAsuransi;
+    }
+
+    public BigInteger getBunga() {
+        return bunga;
+    }
+
+    public void setBunga(BigInteger bunga) {
+        this.bunga = bunga;
+    }
+
+    public BigInteger getJmlBayar() {
+        return jmlBayar;
+    }
+
+    public void setJmlBayar(BigInteger jmlBayar) {
+        this.jmlBayar = jmlBayar;
+    }
+
+    public String getMasaBerlaku() {
+        return masaBerlaku;
+    }
+
+    public void setMasaBerlaku(String masaBerlaku) {
+        this.masaBerlaku = masaBerlaku;
+    }
+
+    @XmlTransient
+    public List<Klaim> getKlaimList() {
+        return klaimList;
+    }
+
+    public void setKlaimList(List<Klaim> klaimList) {
+        this.klaimList = klaimList;
     }
 
     @XmlTransient
@@ -96,7 +141,7 @@ public class Asuransi implements Serializable {
 
     @Override
     public String toString() {
-        return " "+ kodeAsuransi +" " ;
+        return "" + kodeAsuransi + "";
     }
     
 }

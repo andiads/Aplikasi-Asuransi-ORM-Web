@@ -11,6 +11,7 @@ import entities.Admin;
 import entities.Asuransi;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,6 +40,9 @@ public class UpdateAsuransi extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String id = request.getParameter("kodeasuransi");
         String jenis = request.getParameter("jenisasuransi");
+        String masaberlaku = request.getParameter("masaberlaku");
+        String bunga = request.getParameter("bunga");
+        String pembayaran = request.getParameter("pembayaran/bulan");
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         AsuransiDAO adao = new AsuransiDAO();
@@ -46,6 +50,9 @@ public class UpdateAsuransi extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
            Asuransi asuransi = new Asuransi(id);
            asuransi.setJenisAsuransi(jenis);
+           asuransi.setMasaBerlaku(masaberlaku);
+           asuransi.setBunga(new BigInteger(bunga));
+           asuransi.setJmlBayar(new BigInteger(pembayaran));
 //           adao.update(a);
            
             if (adao.update(asuransi)) {

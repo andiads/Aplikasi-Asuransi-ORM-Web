@@ -11,6 +11,7 @@ import entities.Admin;
 import entities.Asuransi;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,6 +41,9 @@ public class AsuransiInsert extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String kodeasuransi = request.getParameter("kdasuransi");
         String jenisasuransi = request.getParameter("jenisasuransi");
+        String masaberlaku = request.getParameter("masaberlaku");
+        String bunga = request.getParameter("bunga");
+        String pembayaran = request.getParameter("pembayaran/bulan");
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         AsuransiDAO adao = new AsuransiDAO();
@@ -49,6 +53,9 @@ public class AsuransiInsert extends HttpServlet {
            
            asuransi.setKodeAsuransi(kodeasuransi);
            asuransi.setJenisAsuransi(jenisasuransi);
+           asuransi.setMasaBerlaku(masaberlaku);
+           asuransi.setBunga(new BigInteger(bunga));
+           asuransi.setJmlBayar(new BigInteger(pembayaran));
 
             if (adao.insert(asuransi)) {
                 pesan = "berhasil mengubah data dengan ID : "+asuransi.getKodeAsuransi();

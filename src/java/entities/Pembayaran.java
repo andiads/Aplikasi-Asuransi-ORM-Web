@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pembayaran.findAll", query = "SELECT p FROM Pembayaran p")
     , @NamedQuery(name = "Pembayaran.findByNoPembayaran", query = "SELECT p FROM Pembayaran p WHERE p.noPembayaran = :noPembayaran")
     , @NamedQuery(name = "Pembayaran.findByTglPembayaran", query = "SELECT p FROM Pembayaran p WHERE p.tglPembayaran = :tglPembayaran")
-    , @NamedQuery(name = "Pembayaran.findByJmlhBayar", query = "SELECT p FROM Pembayaran p WHERE p.jmlhBayar = :jmlhBayar")})
+    , @NamedQuery(name = "Pembayaran.findByJmlhBayar", query = "SELECT p FROM Pembayaran p WHERE p.jmlhBayar = :jmlhBayar")
+    , @NamedQuery(name = "Pembayaran.findBySaldo", query = "SELECT p FROM Pembayaran p WHERE p.saldo = :saldo")})
 public class Pembayaran implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +47,8 @@ public class Pembayaran implements Serializable {
     private Date tglPembayaran;
     @Column(name = "JMLH_BAYAR")
     private Long jmlhBayar;
+    @Column(name = "SALDO")
+    private BigInteger saldo;
     @JoinColumn(name = "KODE_ASURANSI", referencedColumnName = "KODE_ASURANSI")
     @ManyToOne(fetch = FetchType.LAZY)
     private Asuransi kodeAsuransi;
@@ -81,6 +85,14 @@ public class Pembayaran implements Serializable {
 
     public void setJmlhBayar(Long jmlhBayar) {
         this.jmlhBayar = jmlhBayar;
+    }
+
+    public BigInteger getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(BigInteger saldo) {
+        this.saldo = saldo;
     }
 
     public Asuransi getKodeAsuransi() {
@@ -121,7 +133,7 @@ public class Pembayaran implements Serializable {
 
     @Override
     public String toString() {
-        return "" + noPembayaran + "" ;
+        return "entities.Pembayaran[ noPembayaran=" + noPembayaran + " ]";
     }
     
 }

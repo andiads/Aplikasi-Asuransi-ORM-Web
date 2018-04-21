@@ -63,6 +63,8 @@ public class Nasabah implements Serializable {
     @Basic(optional = false)
     @Column(name = "NO_POLIS")
     private String noPolis;
+    @OneToMany(mappedBy = "noPolis", fetch = FetchType.LAZY)
+    private List<Klaim> klaimList;
     @JoinColumn(name = "ID_ADMIN", referencedColumnName = "ID_ADMIN")
     @ManyToOne(fetch = FetchType.LAZY)
     private Admin idAdmin;
@@ -140,6 +142,15 @@ public class Nasabah implements Serializable {
         this.noPolis = noPolis;
     }
 
+    @XmlTransient
+    public List<Klaim> getKlaimList() {
+        return klaimList;
+    }
+
+    public void setKlaimList(List<Klaim> klaimList) {
+        this.klaimList = klaimList;
+    }
+
     public Admin getIdAdmin() {
         return idAdmin;
     }
@@ -179,7 +190,7 @@ public class Nasabah implements Serializable {
 
     @Override
     public String toString() {
-        return "" + noPolis +  "";
+        return "" + noPolis + "";
     }
     
 }

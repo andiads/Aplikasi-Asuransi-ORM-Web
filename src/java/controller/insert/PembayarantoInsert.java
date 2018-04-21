@@ -5,6 +5,10 @@
  */
 package controller.insert;
 
+import DAO.NasabahDAO;
+import DAO.PembayaranDAO;
+import entities.Nasabah;
+import entities.Pembayaran;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -13,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -33,11 +38,16 @@ public class PembayarantoInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
         RequestDispatcher dispatcher = null;
+         String id = request.getParameter("id");
+        PembayaranDAO pdao = new PembayaranDAO();
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            session.setAttribute("nopolis", pdao.getById(id));
+            session.setAttribute("autoIDPembayaran",pdao.getAutoID());
            dispatcher = request.getRequestDispatcher("View/insert/DataPembayaran.jsp");
-            dispatcher.forward(request, response);
+            dispatcher.include(request, response);
         }
     }
 

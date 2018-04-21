@@ -56,5 +56,8 @@ public class NasabahDAO implements InterfaceDAO {
     public Object getById(String id) {
         return fdao.getById("from Nasabah where NIK='" + id + "'");
     }
+    public String getAutoID(){
+        return (String) fdao.getById("SELECT CONCAT('P', LPAD((TO_NUMBER(SUBSTR(MAX(noPolis),2,3))+1), 3, '0'))FROM Nasabah");
+    }
 
 }

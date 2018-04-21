@@ -52,4 +52,8 @@ public class PembayaranDAO implements InterfaceDAO{
     return fdao.getById("from Pembayaran where noPembayaran='" + id + "'");
     }
     
+    public String getAutoID(){
+        return (String) fdao.getById("SELECT CONCAT('B', LPAD((TO_NUMBER(SUBSTR(MAX(noPembayaran),2,3))+1), 3, '0'))FROM Pembayaran");
+    }
+    
 }
