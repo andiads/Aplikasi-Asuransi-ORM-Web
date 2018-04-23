@@ -5,23 +5,13 @@
  */
 package controller.insert;
 
-import DAO.AsuransiDAO;
 import DAO.DetailNasabahDAO;
-import DAO.KlaimDAO;
 import DAO.NasabahDAO;
-import entities.Asuransi;
+import DAO.PembayaranDAO;
 import entities.DetailNasabah;
-import entities.Klaim;
 import entities.Nasabah;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,8 +24,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "KlaimInsert", urlPatterns = {"/klaiminsert"})
-public class KlaimInsert extends HttpServlet {
+@WebServlet(name = "DaftarAsuransiBaru", urlPatterns = {"/DaftarAsuransiBaru"})
+public class DaftarAsuransiBaru extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,69 +39,25 @@ public class KlaimInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String idklaim = request.getParameter("idKlaim");
-        String kodeasuransi = request.getParameter("kodeasuransi");
-        String nopolis = request.getParameter("noPolis");
-        String tglklaim = request.getParameter("tglKlaim");
-        String tgljoin = request.getParameter("tgljoin");
-        
-         Date date1 = null;
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tglklaim);
-        } catch (ParseException ex) {
-            Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         Date date2 = null;
-        try {
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(tgljoin);
-        } catch (ParseException ex) {
-            Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        long perhitungantanggal = (date1.getTime() - date2.getTime());
-        long masatunggu = TimeUnit.MILLISECONDS.toDays(perhitungantanggal);
-        
-        Asuransi asuransi = (Asuransi) new AsuransiDAO().getById(kodeasuransi);
-        long masaberlaku = Long.parseLong(asuransi.getMasaBerlaku());
-        long konvertkehari = masaberlaku*365;
-        System.out.println(masaberlaku);
-        
-
-        String pesan = "gagal mengubah data";
-        RequestDispatcher dispatcher = null;
-        KlaimDAO kdao = new KlaimDAO();
-
-        
-        
-        
         HttpSession session = request.getSession();
-        DetailNasabah detailNasabah = (DetailNasabah) new DetailNasabahDAO().getById(nopolis);
-        
+        RequestDispatcher dispatcher = null;
+        String id = request.getParameter("id");
+
         try (PrintWriter out = response.getWriter()) {
-            Klaim klaim = new Klaim();
             
-            if (masatunggu>=konvertkehari) {
-            klaim.setIdklaim(idklaim);
-            klaim.setKodeAsuransi(new Asuransi(kodeasuransi));
-            klaim.setNoPolis(new Nasabah(nopolis));
-            klaim.setTglKlaim(date1);
-            if (kdao.insert(klaim)) {
-                pesan = "berhasil mengubah data dengan ID : " + klaim.getIdklaim();
-
-            }
-
-
-        }else{
-                System.out.println("anda masuk masa tunggu");
-            }
+            DetailNasabahDAO dndao = new DetailNasabahDAO();
+            PembayaranDAO pdao = new PembayaranDAO();
+            Nasabah nasabah = (Nasabah) new NasabahDAO().getById(id);
+            DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(nasabah.getNoPolis());
             
-            
-            
-            session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("datapembayaranservlet");
+            session.setAttribute("datadetail", dn);
+            session.setAttribute("nasabah", nasabah);
+            session.setAttribute("iddaftar", dndao.getAutoID());
+            session.setAttribute("autoIDPembayaran", pdao.getAutoID());
+            dispatcher = request.getRequestDispatcher("View/insert/DaftarAsuransiBaru.jsp");
             dispatcher.include(request, response);
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

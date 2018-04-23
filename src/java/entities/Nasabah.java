@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -65,6 +66,8 @@ public class Nasabah implements Serializable {
     private String noPolis;
     @OneToMany(mappedBy = "noPolis", fetch = FetchType.LAZY)
     private List<Klaim> klaimList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "noPolis", fetch = FetchType.LAZY)
+    private List<DetailNasabah> detailNasabahList;
     @JoinColumn(name = "ID_ADMIN", referencedColumnName = "ID_ADMIN")
     @ManyToOne(fetch = FetchType.LAZY)
     private Admin idAdmin;
@@ -149,6 +152,15 @@ public class Nasabah implements Serializable {
 
     public void setKlaimList(List<Klaim> klaimList) {
         this.klaimList = klaimList;
+    }
+
+    @XmlTransient
+    public List<DetailNasabah> getDetailNasabahList() {
+        return detailNasabahList;
+    }
+
+    public void setDetailNasabahList(List<DetailNasabah> detailNasabahList) {
+        this.detailNasabahList = detailNasabahList;
     }
 
     public Admin getIdAdmin() {

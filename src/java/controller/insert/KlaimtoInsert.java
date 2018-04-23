@@ -5,7 +5,9 @@
  */
 package controller.insert;
 
+import DAO.DetailNasabahDAO;
 import DAO.KlaimDAO;
+import entities.DetailNasabah;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -35,19 +37,20 @@ public class KlaimtoInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-         HttpSession session = request.getSession();
+        String id = request.getParameter("id");
+        HttpSession session = request.getSession();
         RequestDispatcher dispatcher = null;
         KlaimDAO kdao = new KlaimDAO();
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            session.setAttribute("autoIDKlaim",kdao.getAutoID());
-           dispatcher = request.getRequestDispatcher("View/insert/DataKlaim.jsp");
+            DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(id);
+            
+            session.setAttribute("data", dn);
+            session.setAttribute("autoIDKlaim", kdao.getAutoID());
+            dispatcher = request.getRequestDispatcher("View/insert/DataKlaim.jsp");
             dispatcher.forward(request, response);
         }
 
-        }
-    
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

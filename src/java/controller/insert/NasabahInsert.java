@@ -57,31 +57,52 @@ public class NasabahInsert extends HttpServlet {
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         NasabahDAO ndao = new NasabahDAO();
-         HttpSession session = request.getSession();
-         Date date1 = null;
+        HttpSession session = request.getSession();
+        Date date1 = null;
         try {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tgllahir);
         } catch (ParseException ex) {
             Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
         }
         try (PrintWriter out = response.getWriter()) {
-           Nasabah nasabah = new Nasabah();
-           nasabah.setNik(nik);
-           nasabah.setNoPolis(nmrpolis);
-           nasabah.setNmNasabah(namanasabah);
-           nasabah.setTglLahir(date1);
-           nasabah.setPekerjaan(pekerjaan);
-           nasabah.setAlamat(alamat);
-           nasabah.setStatus(status);
-           nasabah.setPengBulan(penghasilan);
-           nasabah.setIdAdmin(new Admin(idadmin));
+            Nasabah nasabah = new Nasabah();
+            nasabah.setNik(nik);
+            nasabah.setNoPolis(nmrpolis);
+            nasabah.setNmNasabah(namanasabah);
+            nasabah.setTglLahir(date1);
+            nasabah.setPekerjaan(pekerjaan);
+            nasabah.setAlamat(alamat);
+            nasabah.setStatus(status);
+            nasabah.setPengBulan(penghasilan);
+            nasabah.setIdAdmin(new Admin(idadmin));
             if (ndao.insert(nasabah)) {
-                pesan = "berhasil mengubah data dengan ID : "+nasabah.getNoPolis();
-                
+                pesan = "berhasil mengubah data dengan ID : " + nasabah.getNoPolis();
+                out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
+                out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
+                out.println("<script>");
+                out.println("$(document).ready(function(){");
+                out.println("swal('Good job!', 'Berhasil Menambahkan Data!', 'success');");
+                out.println("});");
+                out.println("</script>");
+                session.setAttribute("pesaninsert", pesan);
+                dispatcher = request.getRequestDispatcher("NasAsBarutoInsert");
+                dispatcher.include(request, response);
+
+            } else {
+                out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
+                out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
+                out.println("<script>");
+                out.println("$(document).ready(function(){");
+                out.println("swal('Oops...', 'Gagal Menambahkan Data !!', 'error');");
+                out.println("});");
+                out.println("</script>");
+
+                session.setAttribute("pesaninsert", pesan);
+                dispatcher = request.getRequestDispatcher("NasAsBarutoInsert");
+                dispatcher.include(request, response);
+
             }
-            session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("pembayarantoinsert");
-            dispatcher.include(request, response);
+
         }
     }
 

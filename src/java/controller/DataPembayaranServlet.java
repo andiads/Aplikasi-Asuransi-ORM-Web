@@ -6,6 +6,7 @@
 package controller;
 
 import DAO.AsuransiDAO;
+import DAO.DetailNasabahDAO;
 import DAO.PembayaranDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,7 +40,7 @@ public class DataPembayaranServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
         try (PrintWriter out = response.getWriter()) {
             
-         List<Object> datas = new PembayaranDAO().getAll();
+         List<Object> datas = new DetailNasabahDAO().getAll();
          if (session.getAttribute("pesaninsert") != null) {
                 out.print(session.getAttribute("pesaninsert") + "<br>");
                 session.removeAttribute("pesaninsert");

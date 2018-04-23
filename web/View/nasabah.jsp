@@ -247,6 +247,7 @@
                                         <th>ID Admin</th>
                                         <th ></th>
                                         <th ></th>
+                                        <th ></th>
                                     </tr>
                                 </thead>
                                 
@@ -267,12 +268,13 @@
                                         <td><%= n.getIdAdmin()%></td>
                                         <td><a href="nasabahupdate?id=<%=n.getNik()%>">update</a></td>
                                         <td><a href="nasabahdelete?id=<%=n.getNoPolis()%>">delete</a></td>
+                                        <td><a href="DaftarAsuransiBaru?id=<%=n.getNik()%>">Daftar Asuransi Baru</a></td>
                                     </tr>
                                     <% }
                                     %>
                                
                             </table>
-                            <div class="col-md-6 text-right"><a href="nasabahtoinsert" class="btn btn-primary">Tambah Data</a></div>
+                            <div class="col-md-1 text-right"><a href="nasabahtoinsert" class="btn btn-primary">Tambah Data</a></div>
                         </div>
                     </div>
                     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>

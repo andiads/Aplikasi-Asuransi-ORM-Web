@@ -228,7 +228,7 @@
                 <%
                                 String Admin = (String) session.getAttribute("autoID");
                             %>
-                <form name="formupdate" action="admini" method="POST">
+                <form name="formupdate" action="${pageContext.request.contextPath}/admini" method="POST">
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">ID Admin</label>
                         <input class="form-control" name="idAdmin" readonly="true" type="text" value="<%=Admin%>">

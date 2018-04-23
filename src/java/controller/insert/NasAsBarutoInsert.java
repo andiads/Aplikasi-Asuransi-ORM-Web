@@ -6,7 +6,9 @@
 package controller.insert;
 
 import DAO.AdminDAO;
-import entities.Admin;
+import DAO.DetailNasabahDAO;
+import DAO.NasabahDAO;
+import DAO.PembayaranDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,8 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "AdminI", urlPatterns = {"/admini"})
-public class AdminI extends HttpServlet {
+@WebServlet(name = "NasAsBarutoInsert", urlPatterns = {"/NasAsBarutoInsert"})
+public class NasAsBarutoInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,50 +37,17 @@ public class AdminI extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("idAdmin");
-        String nama = request.getParameter("namaAdmin");
-        String alamat = request.getParameter("alamat");
-        String email = request.getParameter("email");
-        String notelp = request.getParameter("noTelp");
-        String pesan = "gagal mengubah data";
+        response.setContentType("text/html;charset=UTF-8");
+          HttpSession session = request.getSession();
         RequestDispatcher dispatcher = null;
-        AdminDAO adao = new AdminDAO();
-         HttpSession session = request.getSession();
+        PembayaranDAO pdao = new PembayaranDAO();
+        
+        DetailNasabahDAO dndao = new DetailNasabahDAO();
         try (PrintWriter out = response.getWriter()) {
-           Admin a = new Admin();
-           a.setIdAdmin(id);
-           a.setNamaAdmin(nama);
-           a.setAlamat(alamat);
-           a.setEmail(email);
-           a.setNoTelp(notelp);
-
-            if (adao.insert(a)) {
-                pesan = "berhasil menambah data dengan ID : "+a.getIdAdmin();
-                 out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
-                out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
-                out.println("<script>");
-                out.println("$(document).ready(function(){");
-                out.println("swal('Good job!', 'Berhasil Menambahkan Data!', 'success');");
-                out.println("});");
-                out.println("</script>");
-                session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("dataadminservlet");
-            dispatcher.include(request, response);
-            }
-            else{
-                out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
-                out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
-                out.println("<script>");
-                out.println("$(document).ready(function(){");
-                out.println("swal('Oops...', 'Gagal Menambahkan Data !!', 'error');");
-                out.println("});");
-                out.println("</script>");
-                session.setAttribute("pesaninsert", pesan);
-                dispatcher = request.getRequestDispatcher("NasAsBarutoInsert");
-                dispatcher.include(request, response);
-            }
-            
+            session.setAttribute("iddaftar", dndao.getAutoID());
+            session.setAttribute("autoIDPembayaran",pdao.getAutoID());
+           dispatcher = request.getRequestDispatcher("View/insert/PembayaranNasabahBaru.jsp");
+            dispatcher.forward(request, response);
         }
     }
 

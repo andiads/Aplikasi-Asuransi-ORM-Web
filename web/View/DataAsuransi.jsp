@@ -240,17 +240,11 @@
                                             <th>Masa Berlaku</th>
                                             <th>Bunga</th>
                                             <th>Pembayaran/Bulan</th>
+                                            <th></th>
                                     </tr>
                                 </thead>
                                 <tfoot>
-                                    <tr>
-                                        <th>ID Asuransi</th>
-                                            <th>Jenis Asuransi</th>
-                                            <th>Masa Berlaku</th>
-                                            <th>Bunga</th>
-                                            <th>Pembayaran/Bulan</th>
-                                        
-                                    </tr>
+                                    
                                 </tfoot>
                                  <%
                                     List<Object> datas = (List<Object>) session.getAttribute("data_asuransi");
@@ -266,6 +260,7 @@
                                             <td><%=a.getMasaBerlaku()%></td>
                                             <td><%=a.getBunga()%> %</td>
                                             <td><%=a.getJmlBayar()%></td>
+                                            <td><a href="asuransiupdate?id=<%=a.getKodeAsuransi()%>">Update</a></td>
                                             </tr>
                                             <% }
                                     %>

@@ -233,7 +233,7 @@
              
             String nasabah = (String) session.getAttribute("autoIDNasabah");
             %>
-                <form name="formupdate" action="nasabahinsert" method="POST">
+                <form name="formupdate" action="${pageContext.request.contextPath}/nasabahinsert" method="POST">
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">NIK</label>
                        <input class="form-control" name="nik"  

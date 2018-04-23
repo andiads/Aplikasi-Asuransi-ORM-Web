@@ -4,6 +4,7 @@
     Author     : dbayu
 --%>
 
+<%@page import="entities.DetailNasabah"%>
 <%@page import="entities.Pembayaran"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -235,46 +236,39 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>NIK</th>
+                                        <th>Id Detail</th>
                                         <th>Nama Nasabah</th>
-                                        <th>Kode Asuransi</th>
-                                        <th>Jenis Asuransi</th>
-                                        <th>Tanggal Bayar</th>
+                                        <th>Nomo Polis</th>
+                                        <th>Asuransi</th>
+                                        <th>Tanggal Join</th>
                                         <th>Saldo</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tfoot>
-                                    <tr>
-                                        <th>NIK</th>
-                                        <th>Nama Nasabah</th>
-                                        <th>Kode Asuransi</th>
-                                        <th>Jenis Asuransi</th>
-                                        <th>Tanggal Bayar</th>
-                                        <th>Saldo</th>
-                                        <th></th>
-                                    </tr>
+                                    
                                 </tfoot>
                                 <%
                                         List<Object> datas = (List<Object>) session.getAttribute("data_pembayaran");
 
                                         for (Object data : datas) {
-                                            Pembayaran a = (Pembayaran) data;
+                                            DetailNasabah a = (DetailNasabah) data;
 
 
                                     %>
-                                <tbody>
+                                
                                         <tr>
-                                            <td><%= a.getNoPolis().getNik()%></td>
+                                            <td><%=a.getIdDetail()%></td>
                                             <td><%= a.getNoPolis().getNmNasabah()%></td>
-                                            <td><%= a.getKodeAsuransi()%></td>
+                                            <td><%= a.getNoPolis()%></td>
                                             <td><%= a.getKodeAsuransi().getJenisAsuransi()%></td>
-                                            <td><%= a.getTglPembayaran()%></td>
+                                            <td><%= a.getTglJoin()%></td>
                                             <td><%= a.getSaldo()%></td>
-                                            <td><a href="pembayarantoinsert?id=<%=a.getNoPolis().getNoPolis()%>" class="button">Bayar Asuransi</a></td>
+                                            <td><a href="pembayarantoinsert?id=<%=a.getIdDetail()%>">Bayar Asuransi</a></td>
+                                            <td><a href="klaimtoinsert?id=<%=a.getIdDetail()%>">Klaim ASuransi</a></td>
 
                                         </tr>
-                                    </tbody>
+                                    
                                     <%
                                         }
                                     %>

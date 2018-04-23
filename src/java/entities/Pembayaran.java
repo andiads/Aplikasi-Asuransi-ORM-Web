@@ -33,8 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pembayaran.findAll", query = "SELECT p FROM Pembayaran p")
     , @NamedQuery(name = "Pembayaran.findByNoPembayaran", query = "SELECT p FROM Pembayaran p WHERE p.noPembayaran = :noPembayaran")
     , @NamedQuery(name = "Pembayaran.findByTglPembayaran", query = "SELECT p FROM Pembayaran p WHERE p.tglPembayaran = :tglPembayaran")
-    , @NamedQuery(name = "Pembayaran.findByJmlhBayar", query = "SELECT p FROM Pembayaran p WHERE p.jmlhBayar = :jmlhBayar")
-    , @NamedQuery(name = "Pembayaran.findBySaldo", query = "SELECT p FROM Pembayaran p WHERE p.saldo = :saldo")})
+    , @NamedQuery(name = "Pembayaran.findByJumlahBayar", query = "SELECT p FROM Pembayaran p WHERE p.jumlahBayar = :jumlahBayar")})
 public class Pembayaran implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,10 +44,8 @@ public class Pembayaran implements Serializable {
     @Column(name = "TGL_PEMBAYARAN")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tglPembayaran;
-    @Column(name = "JMLH_BAYAR")
-    private Long jmlhBayar;
-    @Column(name = "SALDO")
-    private BigInteger saldo;
+    @Column(name = "JUMLAH_BAYAR")
+    private BigInteger jumlahBayar;
     @JoinColumn(name = "KODE_ASURANSI", referencedColumnName = "KODE_ASURANSI")
     @ManyToOne(fetch = FetchType.LAZY)
     private Asuransi kodeAsuransi;
@@ -79,20 +76,12 @@ public class Pembayaran implements Serializable {
         this.tglPembayaran = tglPembayaran;
     }
 
-    public Long getJmlhBayar() {
-        return jmlhBayar;
+    public BigInteger getJumlahBayar() {
+        return jumlahBayar;
     }
 
-    public void setJmlhBayar(Long jmlhBayar) {
-        this.jmlhBayar = jmlhBayar;
-    }
-
-    public BigInteger getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(BigInteger saldo) {
-        this.saldo = saldo;
+    public void setJumlahBayar(BigInteger jumlahBayar) {
+        this.jumlahBayar = jumlahBayar;
     }
 
     public Asuransi getKodeAsuransi() {
@@ -133,7 +122,7 @@ public class Pembayaran implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Pembayaran[ noPembayaran=" + noPembayaran + " ]";
+        return "" + noPembayaran + "";
     }
     
 }

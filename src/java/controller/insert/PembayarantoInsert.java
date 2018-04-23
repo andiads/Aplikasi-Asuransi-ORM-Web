@@ -5,8 +5,10 @@
  */
 package controller.insert;
 
+import DAO.DetailNasabahDAO;
 import DAO.NasabahDAO;
 import DAO.PembayaranDAO;
+import entities.DetailNasabah;
 import entities.Nasabah;
 import entities.Pembayaran;
 import java.io.IOException;
@@ -44,7 +46,12 @@ public class PembayarantoInsert extends HttpServlet {
         PembayaranDAO pdao = new PembayaranDAO();
         try (PrintWriter out = response.getWriter()) {
             
-            session.setAttribute("nopolis", pdao.getById(id));
+//            Nasabah p = (Nasabah) new NasabahDAO().getById(id);
+            DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(id);
+            
+            
+            session.setAttribute("nopolis", dn);
+            
             session.setAttribute("autoIDPembayaran",pdao.getAutoID());
            dispatcher = request.getRequestDispatcher("View/insert/DataPembayaran.jsp");
             dispatcher.include(request, response);

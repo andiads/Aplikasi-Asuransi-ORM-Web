@@ -271,7 +271,7 @@
                                         <td><%=a.getEmail()%></td>
                                         <td><%=a.getNoTelp()%></td>
                                         <td><a href="adminupdate?id=<%=a.getIdAdmin()%>" >Update</a></td>
-                                        <td><a href="admindelete?id=<%=a.getIdAdmin()%>">Delete</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/admindelete?id=<%=a.getIdAdmin()%>">Delete</a></td>
                                             </tr>
                                             <% }
                                     %>

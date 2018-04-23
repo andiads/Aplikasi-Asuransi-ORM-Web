@@ -5,10 +5,22 @@
  */
 package controller.insert;
 
-import DAO.AdminDAO;
-import entities.Admin;
+import DAO.AsuransiDAO;
+import DAO.DetailNasabahDAO;
+import DAO.PembayaranDAO;
+import entities.Asuransi;
+import entities.DetailNasabah;
+import entities.Nasabah;
+import entities.Pembayaran;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +33,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "AdminI", urlPatterns = {"/admini"})
-public class AdminI extends HttpServlet {
+@WebServlet(name = "NasAsInsert", urlPatterns = {"/NasAsInsert"})
+public class NasAsInsert extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * methods. buat nambah data ke detail nasabah sama pembayaran
      *
      * @param request servlet request
      * @param response servlet response
@@ -35,38 +47,69 @@ public class AdminI extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("text/html;charset=UTF-8");
-        String id = request.getParameter("idAdmin");
-        String nama = request.getParameter("namaAdmin");
-        String alamat = request.getParameter("alamat");
-        String email = request.getParameter("email");
-        String notelp = request.getParameter("noTelp");
+        response.setContentType("text/html;charset=UTF-8");
+        String nopembayaran = request.getParameter("nmrpembayaran");
+        String tglpembayaran = request.getParameter("tglpembayaran");
+        String nopolis = request.getParameter("nmrpolis");
+        String kodeasuransi = request.getParameter("kdasuransi");
+
+        String nmrdaftar = request.getParameter("nmrdaftar");
+
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        AdminDAO adao = new AdminDAO();
-         HttpSession session = request.getSession();
-        try (PrintWriter out = response.getWriter()) {
-           Admin a = new Admin();
-           a.setIdAdmin(id);
-           a.setNamaAdmin(nama);
-           a.setAlamat(alamat);
-           a.setEmail(email);
-           a.setNoTelp(notelp);
+        PembayaranDAO pdao = new PembayaranDAO();
+        DetailNasabahDAO dndao = new DetailNasabahDAO();
+        HttpSession session = request.getSession();
+        Date date1 = null;
 
-            if (adao.insert(a)) {
-                pesan = "berhasil menambah data dengan ID : "+a.getIdAdmin();
-                 out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
+        try {
+
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tglpembayaran);
+        } catch (ParseException ex) {
+            Logger.getLogger(PembayaranInsert.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        double saldo = 0;
+        double totalbunga = 0;
+        double totalsaldo = 0;
+        try (PrintWriter out = response.getWriter()) {
+            Asuransi a = (Asuransi) new AsuransiDAO().getById(kodeasuransi);
+            double bungaawal = Long.parseLong(a.getBunga() + "");
+            double jumlahbayar = Long.parseLong(a.getJmlBayar() + "");
+
+            double bunga = bungaawal / 100;
+            totalbunga = bunga * jumlahbayar;
+            totalsaldo = totalbunga + saldo + jumlahbayar;
+
+            BigInteger hasilpembayaran = BigDecimal.valueOf(totalsaldo).toBigInteger();
+
+            Pembayaran pembayaran = new Pembayaran();
+            pembayaran.setNoPembayaran(nopembayaran);
+            pembayaran.setTglPembayaran(date1);
+            pembayaran.setNoPolis(new Nasabah(nopolis));
+            pembayaran.setKodeAsuransi(new Asuransi(kodeasuransi));
+            pembayaran.setJumlahBayar(hasilpembayaran);
+
+            DetailNasabah detailNasabah = new DetailNasabah();
+            detailNasabah.setIdDetail(nmrdaftar);
+            detailNasabah.setKodeAsuransi(new Asuransi(kodeasuransi));
+            detailNasabah.setNoPolis(new Nasabah(nopolis));
+            detailNasabah.setSaldo(hasilpembayaran);
+            detailNasabah.setTglJoin(date1);
+            if (pdao.insert(pembayaran) && dndao.insert(detailNasabah)) {
+                pesan = "berhasil mengubah data dengan ID : " + pembayaran.getNoPembayaran();
+                out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
                 out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
                 out.println("<script>");
                 out.println("$(document).ready(function(){");
                 out.println("swal('Good job!', 'Berhasil Menambahkan Data!', 'success');");
                 out.println("});");
                 out.println("</script>");
+
                 session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("dataadminservlet");
-            dispatcher.include(request, response);
-            }
-            else{
+                dispatcher = request.getRequestDispatcher("nasabahServlet");
+                dispatcher.include(request, response);
+            } else {
                 out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
                 out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
                 out.println("<script>");
@@ -75,10 +118,10 @@ public class AdminI extends HttpServlet {
                 out.println("});");
                 out.println("</script>");
                 session.setAttribute("pesaninsert", pesan);
-                dispatcher = request.getRequestDispatcher("NasAsBarutoInsert");
+                dispatcher = request.getRequestDispatcher("nasabahServlet");
                 dispatcher.include(request, response);
             }
-            
+
         }
     }
 

@@ -53,6 +53,7 @@ Contributor(s):
     <property name="hibernate.connection.autocommit">true</property>
     <mapping class="entities.Admin"/>
     <mapping class="entities.Asuransi"/>
+    <mapping class="entities.DetailNasabah"/>
     <mapping class="entities.Klaim"/>
     <mapping class="entities.Nasabah"/>
     <mapping class="entities.Pembayaran"/>

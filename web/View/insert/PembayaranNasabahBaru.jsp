@@ -1,16 +1,16 @@
 <%-- 
-    Document   : DataKlamin
-    Created on : Apr 19, 2018, 4:57:55 PM
-    Author     : Toshiba
+    Document   : PembayaranNasabahBaru
+    Created on : Apr 22, 2018, 2:14:01 PM
+    Author     : dbayu
 --%>
 
-<%@page import="entities.DetailNasabah"%>
 <%@page import="entities.Asuransi"%>
-<%@page import="DAO.AsuransiDAO"%>
 <%@page import="java.util.List"%>
+<%@page import="DAO.AsuransiDAO"%>
+<%@page import="entities.Nasabah"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -231,36 +231,44 @@
                 <!-- Icon Cards-->
               <%
 
-                                String klaim = (String) session.getAttribute("autoIDKlaim");
-                                DetailNasabah dn = (DetailNasabah) session.getAttribute("data");
+                                String pembayaran = (String) session.getAttribute("autoIDPembayaran");
+//                                Nasabah nopolis = (Nasabah) session.getAttribute("nopolis");
+                                String iddaftar = (String) session.getAttribute("iddaftar");
                             %>
-                <form name="formupdate" action="${pageContext.request.contextPath}/klaiminsert" method="POST">
+                <form name="formupdate" action="NasAsInsert" method="POST">
                     <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess">ID Klaim</label>
-                        <input class="form-control" name="idKlaim" readonly="true" type="text" value="<%=klaim%>">
+                        <label class="control-label" for="inputSuccess">Nomor Pembayaran</label>
+                       <input class="form-control" name="nmrpembayaran" readonly="true" type="text" value="<%=pembayaran%>">
+                    </div>
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess">Nomor Daftar Baru</label>
+                       <input class="form-control" name="nmrdaftar" readonly="true" type="text" value="<%=iddaftar%>">
                     </div>
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Nomor Polis</label>
-                        <input class="form-control" name="noPolis" type="text" value="<%=dn.getNoPolis()%>"     >
-                        <input class="form-control" name="Nama" type="text" value="<%=dn.getNoPolis().getNmNasabah()%>"     >
-                    </div>
+                        <input class="form-control" name="nmrpolis" type="text" value=""     ></div>
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess">Tanggal Pembayaran</label>
+                       <input class="form-control" name="tglpembayaran" type="Date" value=""     ></div>
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Asuransi</label>
-                         <input class="form-control" name="kodeasuransi" type="text" value="<%=dn.getKodeAsuransi()%>"     >
-                         <input class="form-control" name="asuransi" type="text" value="<%=dn.getKodeAsuransi().getJenisAsuransi()%>"     >
-                       </div>
-                       <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess">Tanggal Join</label>
-                       <input class="form-control" name="tgljoin" type="text" value="<%=dn.getTglJoin()%>">
-                    </div>
-                    <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess">Tanggal Klaim</label>
                     
-                        <input class="form-control" name="tglKlaim" type="date" value=""     ></div>
-                    
+                        <select name="kdasuransi" >
+                                        <% List<Object> datas2 = new AsuransiDAO().getAll();
+                                            for (Object data : datas2) {
+                                                Asuransi asuransi = (Asuransi) data;
+//                                                                                     %>
+                                        <option value="<%= asuransi.getKodeAsuransi()%>">
+                                            <%=asuransi.getJenisAsuransi()%>, dengan Cicilan: Rp.
+                                            <%=asuransi.getJmlBayar()%>/bulan</option>
+                                            <%
+                                                }
+                                            %>
+                                    </select></div>
+                        
                    
                     
-                    <button type="submit" class="btn btn-default">Klaim Asuransi</button>
+                    <button type="submit" class="btn btn-default">Bayar Asuransi</button>
                 </form>
                     
 
