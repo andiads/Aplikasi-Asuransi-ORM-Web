@@ -1,0 +1,129 @@
+TABLE ADMIN
+===========================================================================================================================================
+CREATE TABLE  "ADMIN" 
+   (	"ID_ADMIN" VARCHAR2(5), 
+	"NAMA_ADMIN" VARCHAR2(30), 
+	"NO_TELP" VARCHAR2(10), 
+	"EMAIL" VARCHAR2(15), 
+	"ALAMAT" VARCHAR2(20), 
+	"PASSWORD" VARCHAR2(255), 
+	"HAK_AKSES" VARCHAR2(15), 
+	 CONSTRAINT "PK_NIP" PRIMARY KEY ("ID_ADMIN") ENABLE
+   ) ;
+============================================================================================================================================
+
+
+
+
+TABLE ASURANSI
+===========================================================================================================================================
+CREATE TABLE  "ASURANSI" 
+   (	"KODE_ASURANSI" VARCHAR2(8), 
+	"JENIS_ASURANSI" VARCHAR2(20), 
+	"BUNGA" NUMBER, 
+	"JML_BAYAR" NUMBER(*,0), 
+	"MASA_BERLAKU" VARCHAR2(2), 
+	 CONSTRAINT "PK_KODE_ASURANSI" PRIMARY KEY ("KODE_ASURANSI") ENABLE
+   ) ;
+============================================================================================================================================
+
+
+
+
+TABLE DETAIL_NASABAH
+============================================================================================================================================
+CREATE TABLE  "DETAIL_NASABAH" 
+   (	"ID_DETAIL" VARCHAR2(5), 
+	"KODE_ASURANSI" VARCHAR2(5), 
+	"NO_POLIS" VARCHAR2(5), 
+	"TGL_JOIN" DATE, 
+	"SALDO" NUMBER, 
+	 CONSTRAINT "DETAILPK" PRIMARY KEY ("ID_DETAIL") ENABLE
+   ) ;ALTER TABLE  "DETAIL_NASABAH" ADD CONSTRAINT "DETAILFK1" FOREIGN KEY ("KODE_ASURANSI")
+	  REFERENCES  "ASURANSI" ("KODE_ASURANSI") ENABLE;ALTER TABLE  "DETAIL_NASABAH" ADD CONSTRAINT "DETAILFK2" FOREIGN KEY ("NO_POLIS")
+	  REFERENCES  "NASABAH" ("NO_POLIS") ENABLE;
+============================================================================================================================================
+
+
+
+
+TABLE & TRIGGER KLAIM
+============================================================================================================================================
+
+CREATE TABLE  "KLAIM" 
+   (	"IDKLAIM" VARCHAR2(5), 
+	"TGL_KLAIM" DATE, 
+	"NO_POLIS" VARCHAR2(5), 
+	"KODE_ASURANSI" VARCHAR2(5), 
+	 CONSTRAINT "PK_KLAIM" PRIMARY KEY ("IDKLAIM") ENABLE
+   ) ;ALTER TABLE  "KLAIM" ADD CONSTRAINT "FK_KLAIM_ASURANSI" FOREIGN KEY ("KODE_ASURANSI")
+	  REFERENCES  "ASURANSI" ("KODE_ASURANSI") ENABLE;ALTER TABLE  "KLAIM" ADD CONSTRAINT "FK_KLAIM_POLIS" FOREIGN KEY ("NO_POLIS")
+	  REFERENCES  "NASABAH" ("NO_POLIS") ENABLE;
+
+
+CREATE OR REPLACE TRIGGER  "KLAIM" 
+AFTER INSERT OR UPDATE OR DELETE ON klaim
+FOR EACH ROW
+BEGIN
+IF INSERTING THEN
+delete from detail_nasabah
+where no_polis= :new.no_polis
+and kode_asuransi = :new.kode_asuransi;
+END IF;
+END;
+/
+ALTER TRIGGER  "KLAIM" ENABLE;
+============================================================================================================================================
+
+
+
+
+TABLE NASABAH
+============================================================================================================================================
+
+CREATE TABLE  "NASABAH" 
+   (	"NIK" VARCHAR2(16), 
+	"NM_NASABAH" VARCHAR2(30), 
+	"TGL_LAHIR" DATE, 
+	"PEKERJAAN" VARCHAR2(20), 
+	"ALAMAT" VARCHAR2(30), 
+	"STATUS" VARCHAR2(15), 
+	"PENG_BULAN" VARCHAR2(20), 
+	"ID_ADMIN" VARCHAR2(5), 
+	"NO_POLIS" VARCHAR2(5), 
+	 CONSTRAINT "PK_ID_NASABAH" PRIMARY KEY ("NO_POLIS") ENABLE, 
+	 CONSTRAINT "UNI" UNIQUE ("NIK") ENABLE
+   ) ;ALTER TABLE  "NASABAH" ADD CONSTRAINT "FK_IDADMIN" FOREIGN KEY ("ID_ADMIN")
+	  REFERENCES  "ADMIN" ("ID_ADMIN") ENABLE;
+============================================================================================================================================
+
+
+
+
+TABLE & TRIGGER PEMBAYARAN
+============================================================================================================================================
+
+CREATE TABLE  "PEMBAYARAN" 
+   (	"NO_PEMBAYARAN" VARCHAR2(8), 
+	"TGL_PEMBAYARAN" DATE, 
+	"JMLH_BAYAR" NUMBER(15,0), 
+	"NO_POLIS" VARCHAR2(8), 
+	"KODE_ASURANSI" VARCHAR2(8), 
+	"JUMLAH_BAYAR" NUMBER(19,2), 
+	 CONSTRAINT "PK_PEMBAYARAN" PRIMARY KEY ("NO_PEMBAYARAN") ENABLE
+   ) ;ALTER TABLE  "PEMBAYARAN" ADD CONSTRAINT "FK_PEMBAYARAN_ASURANSI" FOREIGN KEY ("KODE_ASURANSI")
+	  REFERENCES  "ASURANSI" ("KODE_ASURANSI") ENABLE;ALTER TABLE  "PEMBAYARAN" ADD CONSTRAINT "FK_PEMBAYARAN_POLIS" FOREIGN KEY ("NO_POLIS")
+	  REFERENCES  "NASABAH" ("NO_POLIS") ENABLE;
+
+
+CREATE OR REPLACE TRIGGER  "BAYAR" 
+AFTER INSERT OR UPDATE OR DELETE ON pembayaran
+FOR EACH ROW
+BEGIN
+IF INSERTING THEN
+update detail_nasabah set saldo= saldo+ :new.jumlah_bayar
+where no_polis= :new.no_polis
+and kode_asuransi = :new.kode_asuransi;
+END IF;
+END;
+/
