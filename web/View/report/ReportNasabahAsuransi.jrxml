@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e614396e-024d-4a14-8721-54c1af435200">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="kategory" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="kategory1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$F{NASABAH_NO_POLIS}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     ASURANSI."JENIS_ASURANSI" AS ASURANSI_JENIS_ASURANSI,
+     ASURANSI."MASA_BERLAKU" AS ASURANSI_MASA_BERLAKU,
+     DETAIL_NASABAH."SALDO" AS DETAIL_NASABAH_SALDO,
+     PEMBAYARAN."KODE_ASURANSI" AS PEMBAYARAN_KODE_ASURANSI,
+     NASABAH."NM_NASABAH" AS NASABAH_NM_NASABAH,
+     NASABAH."NO_POLIS" AS NASABAH_NO_POLIS
+FROM
+     "HR"."ASURANSI" ASURANSI INNER JOIN "HR"."DETAIL_NASABAH" DETAIL_NASABAH ON ASURANSI."KODE_ASURANSI" = DETAIL_NASABAH."KODE_ASURANSI"
+     INNER JOIN "HR"."PEMBAYARAN" PEMBAYARAN ON ASURANSI."KODE_ASURANSI" = PEMBAYARAN."KODE_ASURANSI"
+     INNER JOIN "HR"."NASABAH" NASABAH ON PEMBAYARAN."NO_POLIS" = NASABAH."NO_POLIS"
+     AND NASABAH."NO_POLIS" = DETAIL_NASABAH."NO_POLIS"]]>
+	</queryString>
+	<field name="NASABAH_NM_NASABAH" class="java.lang.String"/>
+	<field name="NASABAH_NO_POLIS" class="java.lang.String"/>
+	<field name="ASURANSI_JENIS_ASURANSI" class="java.lang.String"/>
+	<field name="DETAIL_NASABAH_SALDO" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="105" y="3" width="359" height="31" uuid="cc39b45c-d970-423f-9947-f5d3ce570ccf"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ASURANSI NASABAH]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="81" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="452" y="4" width="100" height="20" uuid="f20a08c6-a013-470b-85bc-0281ead437e5"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="31" width="100" height="20" uuid="7611dea4-1e66-46af-b063-fe3ab123b35e"/>
+				<text><![CDATA[No Polis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="59" width="100" height="20" uuid="365ff299-ab84-4007-888a-712bd2378e2f"/>
+				<text><![CDATA[Nama Nasabah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="31" width="0" height="20" uuid="ec268111-2938-49e5-8bc2-2e4ede04e1a2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="59" width="0" height="20" uuid="de15290c-d29d-463d-b7ed-7c047d28caf6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="31" width="100" height="20" uuid="de291f9e-00ff-4228-9f23-59391f023e62"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_NO_POLIS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="59" width="100" height="20" uuid="9d98e403-f138-42c7-a8d2-cadd38f340d9"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_NM_NASABAH}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement x="127" y="46" width="133" height="20" uuid="b6460d16-1fc0-44cc-a37c-522c70f5d1db"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Jenis Asuransi yang Dimiliki]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="325" y="46" width="81" height="20" uuid="b71be227-f4e9-4a97-9326-66fd2e920f81"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Jumlah Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="128" y="2" width="133" height="20" uuid="7799c189-bc01-4c02-9be0-c447085280fa"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ASURANSI_JENIS_ASURANSI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="2" width="100" height="20" uuid="11d1dcc9-2273-4894-b105-ecf96ba1745c"/>
+				<textFieldExpression><![CDATA[$F{DETAIL_NASABAH_SALDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="433" y="1" width="80" height="20" uuid="5a134489-a9f3-49b0-865d-c55020de3df4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="512" y="1" width="40" height="20" uuid="379e939d-7d0c-46a9-bcf8-922b61f44ebd"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

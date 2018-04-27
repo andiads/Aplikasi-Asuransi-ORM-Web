@@ -40,6 +40,7 @@ public class UpdateAdmin extends HttpServlet {
         String alamat = request.getParameter("alamat");
         String email = request.getParameter("email");
         String notelp = request.getParameter("noTelp");
+        String pass = request.getParameter("pass");
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         AdminDAO adao = new AdminDAO();
@@ -50,6 +51,7 @@ public class UpdateAdmin extends HttpServlet {
             a.setAlamat(alamat);
             a.setEmail(email);
             a.setNoTelp(notelp);
+            a.setPassword(pass);
 //           adao.update(a);
 
             if (adao.update(a)) {

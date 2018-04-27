@@ -37,8 +37,12 @@ public class DataPembayaranServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         RequestDispatcher dispatcher = null;
-            HttpSession session = request.getSession(true);
+            HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
+            
+            if (session.getAttribute("err") == null) {
+                response.sendRedirect("Login.jsp");
+            }
             
          List<Object> datas = new DetailNasabahDAO().getAll();
          if (session.getAttribute("pesaninsert") != null) {
@@ -47,7 +51,7 @@ public class DataPembayaranServlet extends HttpServlet {
             }
             session.setAttribute("data_pembayaran", datas);
             dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
-            dispatcher.forward(request, response);
+            dispatcher.include(request, response);
         
         }
     }

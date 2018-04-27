@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import tools.BCrypt;
 
 /**
  *
@@ -41,6 +42,8 @@ public class AdminI extends HttpServlet {
         String alamat = request.getParameter("alamat");
         String email = request.getParameter("email");
         String notelp = request.getParameter("noTelp");
+        String pass = request.getParameter("pass");
+        String hakakses = request.getParameter("hakakses");
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         AdminDAO adao = new AdminDAO();
@@ -52,6 +55,10 @@ public class AdminI extends HttpServlet {
            a.setAlamat(alamat);
            a.setEmail(email);
            a.setNoTelp(notelp);
+           a.setPassword(BCrypt.hashpw(pass, BCrypt.gensalt()));
+           a.setHakAkses(hakakses);
+           
+           Admin admin = new Admin(id, nama, alamat, email, notelp,pass);
 
             if (adao.insert(a)) {
                 pesan = "berhasil menambah data dengan ID : "+a.getIdAdmin();

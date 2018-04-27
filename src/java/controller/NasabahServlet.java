@@ -41,6 +41,10 @@ public class NasabahServlet extends HttpServlet {
         RequestDispatcher dispatcher = null;
         HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
+            
+            if (session.getAttribute("err") == null) {
+                response.sendRedirect("Login.jsp");
+            }
          
             List<Object> datas = new NasabahDAO().getAll();
             if (session.getAttribute("pesandelete") != null) {

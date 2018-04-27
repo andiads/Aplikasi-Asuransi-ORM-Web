@@ -3,14 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.insert;
+package controller;
 
-import DAO.DetailNasabahDAO;
 import DAO.NasabahDAO;
-import DAO.PembayaranDAO;
-import entities.DetailNasabah;
 import entities.Nasabah;
-import entities.Pembayaran;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -25,8 +21,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author dbayu
  */
-@WebServlet(name = "PembayarantoInsert", urlPatterns = {"/pembayarantoinsert"})
-public class PembayarantoInsert extends HttpServlet {
+@WebServlet(name = "NasabahtoDetail", urlPatterns = {"/NasabahtoDetail"})
+public class NasabahtoDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,21 +36,15 @@ public class PembayarantoInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        String id = request.getParameter("id");
         RequestDispatcher dispatcher = null;
-         String id = request.getParameter("id");
-        PembayaranDAO pdao = new PembayaranDAO();
+        HttpSession session = request.getSession();
         try (PrintWriter out = response.getWriter()) {
-            
-//            Nasabah p = (Nasabah) new NasabahDAO().getById(id);
-            DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(id);
-            
-            
-            session.setAttribute("nopolis", dn);
-            
-            session.setAttribute("autoIDPembayaran",pdao.getAutoID());
-           dispatcher = request.getRequestDispatcher("View/insert/DataPembayaran.jsp");
+            Nasabah nasabah = (Nasabah) new NasabahDAO().getById(id);
+            session.setAttribute("nasabah", nasabah);
+            dispatcher = request.getRequestDispatcher("View/DetailNasabah.jsp");
             dispatcher.include(request, response);
+
         }
     }
 

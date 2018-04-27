@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +51,12 @@ public class NasAsInsert extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String nopembayaran = request.getParameter("nmrpembayaran");
-        String tglpembayaran = request.getParameter("tglpembayaran");
+
+//        String tglpembayaran = request.getParameter("tglpembayaran");
+        Date currentDate = new Date();
+        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String tglpembayaran = localDateTime.toString();
+        
         String nopolis = request.getParameter("nmrpolis");
         String kodeasuransi = request.getParameter("kdasuransi");
 
@@ -105,10 +112,8 @@ public class NasAsInsert extends HttpServlet {
                 out.println("swal('Good job!', 'Berhasil Menambahkan Data!', 'success');");
                 out.println("});");
                 out.println("</script>");
-
                 session.setAttribute("pesaninsert", pesan);
-                dispatcher = request.getRequestDispatcher("nasabahServlet");
-                dispatcher.include(request, response);
+
             } else {
                 out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
                 out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
@@ -118,9 +123,11 @@ public class NasAsInsert extends HttpServlet {
                 out.println("});");
                 out.println("</script>");
                 session.setAttribute("pesaninsert", pesan);
+                ;
+            }
+            
                 dispatcher = request.getRequestDispatcher("nasabahServlet");
                 dispatcher.include(request, response);
-            }
 
         }
     }

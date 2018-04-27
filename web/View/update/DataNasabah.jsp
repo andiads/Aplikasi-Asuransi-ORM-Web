@@ -4,6 +4,8 @@
     Author     : dbayu
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
 <%@page import="DAO.AdminDAO"%>
 <%@page import="entities.Admin"%>
 <%@page import="java.util.List"%>
@@ -31,14 +33,14 @@
     <body class="fixed-nav sticky-footer bg-dark" id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Start Bootstrap</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">Home</span>
                         </a>
@@ -47,17 +49,11 @@
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
                         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
                             <i class="fa fa-fw fa-file"></i>
-                            <span class="nav-link-text">Master ASuransi</span>
+                            <span class="nav-link-text">Master Asuransi</span>
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseComponents">
                             <li>
-                                <a href="dataadminservlet">Master Admin</a>
-                            </li>
-                            <li>
-                                <a href="dataasuransiservlet">Master Asuransi</a>
-                            </li>
-                            <li>
-                                <a href="nasabahServlet">Master Nasabag</a>
+                                <a href="nasabahServlet">Master Nasabah</a>
                             </li>
                         </ul>
                     </li>
@@ -71,7 +67,7 @@
                                 <a href="datapembayaranservlet">Pembayaran Asuransi</a>
                             </li>
                             <li>
-                                <a href="klaimtoinsert">Klaim Asuransi</a>
+                                <a href="DataKlaim">Klaim Asuransi</a>
                             </li>
 
                         </ul>
@@ -83,31 +79,13 @@
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseMulti">
                             <li>
-                                <a href="#">Report Data Nasabah</a>
+                                <a href="ReportServlet">Report Data Nasabah</a>
                             </li>
                             <li>
                                 <a href="#">Report Data Pembayaran</a>
                             </li>
                             <li>
                                 <a href="#">report Data Klaim</a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-link"></i>
-                            <span class="nav-link-text">Other</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseMulti">
-                            <li>
-                                <a href="#">Help</a>
-                            </li>
-                            <li>
-                                <a href="#">About Us</a>
-                            </li>
-                            <li>
-                                <a href="#">Log Out</a>
                             </li>
 
                         </ul>
@@ -231,6 +209,9 @@
                 <!-- Icon Cards-->
                 <%
                     Nasabah nasabah = (Nasabah) session.getAttribute("nasabah");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String tgl = dateFormat.format(nasabah.getTglLahir());
+                    
                 %>
                 <form name="formupdate" action="updatenasabah" method="POST">
                     <div class="form-group has-success">
@@ -245,7 +226,7 @@
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Tanggal Lahir</label>
                         <input class="form-control" name="tgllahir" type="Date" 
-                               value="<%= nasabah.getTglLahir()%>"     ></div>
+                               value="<%=tgl%>"     ></div>
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Pekerjaan</label>
                         <input class="form-control" name="pekerjaan" type="text" 
@@ -322,7 +303,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                     </div>
                 </div>
             </div>

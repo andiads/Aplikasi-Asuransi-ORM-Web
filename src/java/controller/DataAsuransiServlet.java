@@ -38,6 +38,10 @@ public class DataAsuransiServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
             AsuransiDAO adao = new AsuransiDAO();
         try (PrintWriter out = response.getWriter()) {
+            
+            if (session.getAttribute("err") == null) {
+                response.sendRedirect("Login.jsp");
+            }
 
             List<Object> datas = new AsuransiDAO().getAll();
             if (session.getAttribute("pesandelete") != null) {

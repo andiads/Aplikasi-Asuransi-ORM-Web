@@ -32,14 +32,14 @@
     <body class="fixed-nav sticky-footer bg-dark" id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Start Bootstrap</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">Home</span>
                         </a>
@@ -48,17 +48,11 @@
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
                         <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
                             <i class="fa fa-fw fa-file"></i>
-                            <span class="nav-link-text">Master ASuransi</span>
+                            <span class="nav-link-text">Master Asuransi</span>
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseComponents">
                             <li>
-                                <a href="dataadminservlet">Master Admin</a>
-                            </li>
-                            <li>
-                                <a href="dataasuransiservlet">Master Asuransi</a>
-                            </li>
-                            <li>
-                                <a href="nasabahServlet">Master Nasabag</a>
+                                <a href="nasabahServlet">Master Nasabah</a>
                             </li>
                         </ul>
                     </li>
@@ -72,7 +66,7 @@
                                 <a href="datapembayaranservlet">Pembayaran Asuransi</a>
                             </li>
                             <li>
-                                <a href="klaimtoinsert">Klaim Asuransi</a>
+                                <a href="DataKlaim">Klaim Asuransi</a>
                             </li>
 
                         </ul>
@@ -84,31 +78,13 @@
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseMulti">
                             <li>
-                                <a href="#">Report Data Nasabah</a>
+                                <a href="ReportServlet">Report Data Nasabah</a>
                             </li>
                             <li>
                                 <a href="#">Report Data Pembayaran</a>
                             </li>
                             <li>
                                 <a href="#">report Data Klaim</a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-link"></i>
-                            <span class="nav-link-text">Other</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseMulti">
-                            <li>
-                                <a href="#">Help</a>
-                            </li>
-                            <li>
-                                <a href="#">About Us</a>
-                            </li>
-                            <li>
-                                <a href="#">Log Out</a>
                             </li>
 
                         </ul>
@@ -230,52 +206,60 @@
                     <li class="breadcrumb-item active">Pembayaran Asuransi</li>
                 </ol>
                 <!-- Icon Cards-->
-              <%
+                <%
 
-                                String pembayaran = (String) session.getAttribute("autoIDPembayaran");
-                                Nasabah nopolis = (Nasabah) session.getAttribute("nasabah");
-                                String iddaftar = (String) session.getAttribute("iddaftar");
-                                DetailNasabah dn = (DetailNasabah) session.getAttribute("datadetail");
-                            %>
+                    String pembayaran = (String) session.getAttribute("autoIDPembayaran");
+                    Nasabah nopolis = (Nasabah) session.getAttribute("nasabah");
+                    String iddaftar = (String) session.getAttribute("iddaftar");
+                    DetailNasabah dn = (DetailNasabah) session.getAttribute("datadetail");
+                %>
                 <form name="formupdate" action="${pageContext.request.contextPath}/NasAsInsert" method="POST">
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Nomor Pembayaran</label>
-                       <input class="form-control" name="nmrpembayaran" readonly="true" type="text" value="<%=pembayaran%>">
+                        <input class="form-control" name="nmrpembayaran" readonly="true" type="text" value="<%=pembayaran%>">
                     </div>
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Nomor Daftar Baru</label>
-                       <input class="form-control" name="nmrdaftar" readonly="true" type="text" value="<%=iddaftar%>">
+                        <input class="form-control" name="nmrdaftar" readonly="true" type="text" value="<%=iddaftar%>">
                     </div>
-                    <div class="form-group has-success">
+                    <div class="form-group has-success ">
                         <label class="control-label" for="inputSuccess">Nomor Polis</label>
-                        <input class="form-control" name="nmrpolis" type="text" value="<%=nopolis.getNoPolis()%>"     ></div>
-                    <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess">Tanggal Pembayaran</label>
-                       <input class="form-control" name="tglpembayaran" type="Date" value=""     ></div>
+                        <div class="row show-grid">
+                             <div class="col-md-2">
+                        <input class="form-control" name="nmrpolis" type="text" value="<%=nopolis.getNoPolis()%>"     >
+                             </div>
+                              <div class="col-md-10">
+                        <input class="form-control" name="nmrpolis" type="text" value="<%=nopolis.getNmNasabah()%>"     >
+                              </div>
+                        </div>
+                    </div>
+
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Asuransi</label>
-                    
+                    <!--</div>-->
+                              <div class="form-group has-success">
+
                         <select name="kdasuransi" >
-                                        <% List<Object> datas2 = new AsuransiDAO().getAll();
-                                            for (Object data : datas2) {
-                                                Asuransi asuransi = (Asuransi) data;
+                            <% List<Object> datas2 = new AsuransiDAO().getAll();
+                                for (Object data : datas2) {
+                                    Asuransi asuransi = (Asuransi) data;
 //                                                                                     %>
-                                        <option value="<%= asuransi.getKodeAsuransi()%>">
-                                            <%=asuransi.getJenisAsuransi()%>, dengan Cicilan: Rp.
-                                            <%=asuransi.getJmlBayar()%>/bulan</option>
-                                            <%
-                                                }
-                                            %>
-                                    </select></div>
-                                    
-                                    
-                                    
-                        
-                   
-                    
+                            <option value="<%= asuransi.getKodeAsuransi()%>">
+                                <%=asuransi.getJenisAsuransi()%>, dengan Cicilan: Rp.
+                                <%=asuransi.getJmlBayar()%>/bulan</option>
+                                <%
+                                    }
+                                %>
+                        </select></div></div>
+
+
+
+
+
+
                     <button type="submit" class="btn btn-default">Bayar Asuransi</button>
                 </form>
-                    
+
 
 
 
@@ -313,7 +297,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                     </div>
                 </div>
             </div>

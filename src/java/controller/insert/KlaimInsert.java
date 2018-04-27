@@ -18,6 +18,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -49,69 +51,87 @@ public class KlaimInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String idklaim = request.getParameter("idKlaim");
-        String kodeasuransi = request.getParameter("kodeasuransi");
-        String nopolis = request.getParameter("noPolis");
-        String tglklaim = request.getParameter("tglKlaim");
-        String tgljoin = request.getParameter("tgljoin");
         
-         Date date1 = null;
+        KlaimDAO kdao = new KlaimDAO();
+        String id = request.getParameter("id");
+        
+        
+        DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(id);
+        String idklaim = kdao.getAutoID();
+        
+        
+        Date currentDate = new Date();
+        LocalDateTime tglklaim = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String convtglklaim = tglklaim.toString();
+
+        
+        
+        Date date1 = null;
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(tglklaim);
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(convtglklaim);
         } catch (ParseException ex) {
             Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
         }
-         Date date2 = null;
+        Date date2 = null;
         try {
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(tgljoin);
+            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dn.getTglJoin()+"");
         } catch (ParseException ex) {
             Logger.getLogger(NasabahInsert.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         long perhitungantanggal = (date1.getTime() - date2.getTime());
         long masatunggu = TimeUnit.MILLISECONDS.toDays(perhitungantanggal);
-        
-        Asuransi asuransi = (Asuransi) new AsuransiDAO().getById(kodeasuransi);
+
+        Asuransi asuransi = (Asuransi) new AsuransiDAO().getById(dn.getKodeAsuransi()+"");
         long masaberlaku = Long.parseLong(asuransi.getMasaBerlaku());
-        long konvertkehari = masaberlaku*365;
+        long konvertkehari = masaberlaku * 365;
         System.out.println(masaberlaku);
-        
 
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
-        KlaimDAO kdao = new KlaimDAO();
 
-        
-        
-        
         HttpSession session = request.getSession();
-        DetailNasabah detailNasabah = (DetailNasabah) new DetailNasabahDAO().getById(nopolis);
-        
         try (PrintWriter out = response.getWriter()) {
             Klaim klaim = new Klaim();
-            
-            if (masatunggu>=konvertkehari) {
-            klaim.setIdklaim(idklaim);
-            klaim.setKodeAsuransi(new Asuransi(kodeasuransi));
-            klaim.setNoPolis(new Nasabah(nopolis));
-            klaim.setTglKlaim(date1);
-            if (kdao.insert(klaim)) {
-                pesan = "berhasil mengubah data dengan ID : " + klaim.getIdklaim();
 
-            }
+            if (masatunggu >= konvertkehari) {
+                klaim.setIdklaim(idklaim);
+                klaim.setKodeAsuransi(new Asuransi(dn.getKodeAsuransi()+""));
+                klaim.setNoPolis(new Nasabah(dn.getNoPolis()+""));
+                klaim.setTglKlaim(date1);
+//                
+                if (kdao.insert(klaim)) {
+                    pesan = "berhasil mengubah data dengan ID : " + klaim.getIdklaim();
+                    out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
+                    out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
+                    out.println("<script>");
+                    out.println("$(document).ready(function(){");
+                    out.println("swal('Good job!', 'Klaim Asuransi Berhasil...', 'success');");
+                    out.println("});");
+                    out.println("</script>");
+                    session.setAttribute("pesaninsert", pesan);
+                    dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
+                    dispatcher.include(request, response);
 
+                }
 
-        }else{
+            } else {
                 System.out.println("anda masuk masa tunggu");
+                out.println("<script src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'></script>");
+                out.println("<script src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
+                out.println("<script>");
+                out.println("$(document).ready(function(){");
+                out.println("swal('Oops...', 'Maaf Anda Masuk dalam Masa Tunggu..', 'error');");
+                out.println("});");
+                out.println("</script>");
+
+                session.setAttribute("pesaninsert", pesan);
+                dispatcher = request.getRequestDispatcher("View/DataPembayaran.jsp");
+                dispatcher.include(request, response);
             }
-            
-            
-            
-            session.setAttribute("pesaninsert", pesan);
-            dispatcher = request.getRequestDispatcher("datapembayaranservlet");
-            dispatcher.include(request, response);
+
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

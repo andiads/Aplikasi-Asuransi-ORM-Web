@@ -39,6 +39,8 @@ public class NasAsBarutoInsert extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
           HttpSession session = request.getSession();
+//          String polis = session.getAttribute("polis");
+        
         RequestDispatcher dispatcher = null;
         PembayaranDAO pdao = new PembayaranDAO();
         

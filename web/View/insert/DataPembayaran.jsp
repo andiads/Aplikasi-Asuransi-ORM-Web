@@ -34,14 +34,14 @@
     <body class="fixed-nav sticky-footer bg-dark" id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Start Bootstrap</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">Home</span>
                         </a>
@@ -251,7 +251,7 @@
                         <label class="control-label" for="inputSuccess">Nama Nasabah :</label>
                         <input class="form-control" name="namanasabah" readonly="true" type="text" value="<%=nopolis.getNoPolis().getNmNasabah()%>"     ></div>
                     <div class="form-group has-success">
-                    <div class="form-group has-success">
+                    <div class="form-groupLogoutServlet has-success">
                         <label class="control-label" for="inputSuccess">Kode Asuransi :</label>
                         <input class="form-control" name="kodeasuransi" readonly="true" type="text" value="<%=nopolis.getKodeAsuransi()%>"     ></div>
                     <div class="form-group has-success">
@@ -307,7 +307,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                     </div>
                 </div>
             </div>

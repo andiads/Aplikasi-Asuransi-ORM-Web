@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="add97817-ae88-4a5d-b144-8f3c976647e9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     ADMIN."NAMA_ADMIN" AS ADMIN_NAMA_ADMIN,
+     NASABAH."NIK" AS NASABAH_NIK,
+     NASABAH."NM_NASABAH" AS NASABAH_NM_NASABAH,
+     NASABAH."PEKERJAAN" AS NASABAH_PEKERJAAN,
+     NASABAH."STATUS" AS NASABAH_STATUS,
+     NASABAH."PENG_BULAN" AS NASABAH_PENG_BULAN,
+     NASABAH."NO_POLIS" AS NASABAH_NO_POLIS
+FROM
+     "HR"."ADMIN" ADMIN INNER JOIN "HR"."NASABAH" NASABAH ON ADMIN."ID_ADMIN" = NASABAH."ID_ADMIN"
+]]>
+	</queryString>
+	<field name="ADMIN_NAMA_ADMIN" class="java.lang.String"/>
+	<field name="NASABAH_NIK" class="java.lang.String"/>
+	<field name="NASABAH_NM_NASABAH" class="java.lang.String"/>
+	<field name="NASABAH_PEKERJAAN" class="java.lang.String"/>
+	<field name="NASABAH_STATUS" class="java.lang.String"/>
+	<field name="NASABAH_PENG_BULAN" class="java.lang.String"/>
+	<field name="NASABAH_NO_POLIS" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="165" y="4" width="229" height="33" uuid="b7b985fd-869b-46b9-b5be-57fa15a77bf3"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORT NASABAH]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="28" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="444" y="4" width="100" height="20" uuid="77d4a2da-ffef-4635-9eb2-d4d7f6db9314"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="36" y="3" width="36" height="20" uuid="fc5e43ca-7e9b-49e6-86c8-b975b01b9d6b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NIK	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="2" width="43" height="20" uuid="9449dee2-489f-433c-ba93-f1947462bb72"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[No Polis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="2" width="100" height="20" uuid="7ab6da1b-1b19-48b3-a604-cd3dd8ac08a5"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama Nasabah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="2" width="49" height="20" uuid="90987dc8-c76f-4dec-bc6d-79caea0c6729"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="2" width="56" height="20" uuid="f615f89c-09ee-4f49-a020-309b72db1991"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pekerjaan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="2" width="100" height="20" uuid="11382d30-ded2-4672-aa65-1f76c5b397eb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pengahasilan/Bulan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="431" y="2" width="70" height="20" uuid="8f087e57-0547-4f38-96d4-6aa1de060b30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama Admin]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="3" width="32" height="20" uuid="2509c6ab-e719-471a-8a20-6da56e52376e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_NIK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="3" width="43" height="20" uuid="1198a36e-a8a9-4acd-828a-65b3e648c9c5"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_NO_POLIS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="115" y="3" width="100" height="20" uuid="14c7288f-4bb2-4cfb-a76a-84d7d6b04553"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_NM_NASABAH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="215" y="3" width="56" height="20" uuid="79c65ab2-4f4f-4016-9176-487713188115"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_PEKERJAAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="3" width="60" height="20" uuid="d2f46135-e50c-4a9a-a20b-94ff13c570b7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_STATUS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="3" width="87" height="20" uuid="90b85b68-38a3-481d-b893-392a2ee6d30b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{NASABAH_PENG_BULAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="0" width="70" height="20" uuid="921776b7-7fd5-4533-a0bd-43c86aa948f0"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_NAMA_ADMIN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="44" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="430" y="3" width="80" height="20" uuid="0a090b70-b693-4730-af6e-464156c69b4a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="510" y="3" width="40" height="20" uuid="cc056b91-3f44-4fba-b90d-1baf69c1c5f5"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -41,7 +41,9 @@ public class DataAdminServlet extends HttpServlet {
         HttpSession session = request.getSession();
         AdminDAO adao = new AdminDAO();
         try (PrintWriter out = response.getWriter()) {
-
+            if (session.getAttribute("err") == null) {
+                response.sendRedirect("Login.jsp");
+            }
             List<Object> datas = new AdminDAO().getAll();
 //          
             if (session.getAttribute("pesan") != null) {

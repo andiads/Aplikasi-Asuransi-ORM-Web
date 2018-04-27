@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3cd6cc35-de5e-45d9-9ed6-31075dc648da">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     ADMIN."ID_ADMIN" AS ADMIN_ID_ADMIN,
+     ADMIN."NAMA_ADMIN" AS ADMIN_NAMA_ADMIN,
+     ADMIN."NO_TELP" AS ADMIN_NO_TELP,
+     ADMIN."EMAIL" AS ADMIN_EMAIL,
+     ADMIN."ALAMAT" AS ADMIN_ALAMAT,
+     ADMIN."PASSWORD" AS ADMIN_PASSWORD,
+     ADMIN."HAK_AKSES" AS ADMIN_HAK_AKSES
+FROM
+     "HR"."ADMIN" ADMIN]]>
+	</queryString>
+	<field name="ADMIN_ID_ADMIN" class="java.lang.String"/>
+	<field name="ADMIN_NAMA_ADMIN" class="java.lang.String"/>
+	<field name="ADMIN_NO_TELP" class="java.lang.String"/>
+	<field name="ADMIN_EMAIL" class="java.lang.String"/>
+	<field name="ADMIN_ALAMAT" class="java.lang.String"/>
+	<field name="ADMIN_PASSWORD" class="java.lang.String"/>
+	<field name="ADMIN_HAK_AKSES" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="185" y="0" width="190" height="36" uuid="6182ed3c-2b82-4bb4-bc4b-7154b3e11aa8"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORT ADMIN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="4" width="100" height="20" uuid="7668d9be-c710-4f54-b5b0-4b28b5559039"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="2" width="49" height="20" uuid="9f653b36-034a-4129-8d97-5d2b509a4a77"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID Admin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="62" y="2" width="100" height="20" uuid="008354ec-8402-4ad0-9df9-066c182f112a"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nama Admin]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="2" width="76" height="20" uuid="7afe5d01-58b5-49a6-979c-d035ee3c9598"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Alamat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="2" width="51" height="20" uuid="11f2ece4-a510-491b-8ebc-814b4e26e1e7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="2" width="100" height="20" uuid="8d38929e-f7dc-48c8-a7cf-a745f38577f3"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Hak Akses]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="468" y="2" width="67" height="20" uuid="9384110b-5d2a-41f3-a14f-ee74fa05ffbf"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Password]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="2" width="79" height="20" uuid="60478a83-812a-41e9-968e-ecc1eba28324"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[No Telp]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="13" y="0" width="49" height="20" uuid="645ce620-b0ef-4208-803e-98353360edbc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_ID_ADMIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="0" width="100" height="20" uuid="f0706739-9610-4136-9761-ebfca7cd775f"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_NAMA_ADMIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="0" width="76" height="20" uuid="ffc89819-bc01-47bc-84ae-ce404b3ca1d6"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_ALAMAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="0" width="51" height="20" uuid="9de00dbb-f5f9-4177-bda7-44e1bdcf694a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_EMAIL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="289" y="0" width="79" height="20" uuid="f7339aa8-8f90-4adc-b761-9cfd8b808f9f"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_NO_TELP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="0" width="100" height="20" uuid="f990a28c-9afd-4249-8ba2-c4cf70092117"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_HAK_AKSES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="0" width="67" height="20" uuid="29a1a3ba-227e-448e-b0ae-5935610717db"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ADMIN_PASSWORD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="431" y="3" width="80" height="20" uuid="25107f6d-79a3-47a3-8e63-d781e8cef28e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="511" y="3" width="40" height="20" uuid="cd8a8ad6-608f-4c53-b39a-b6710b8e1196"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

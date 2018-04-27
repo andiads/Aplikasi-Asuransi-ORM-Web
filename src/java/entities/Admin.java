@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Admin.findByNamaAdmin", query = "SELECT a FROM Admin a WHERE a.namaAdmin = :namaAdmin")
     , @NamedQuery(name = "Admin.findByNoTelp", query = "SELECT a FROM Admin a WHERE a.noTelp = :noTelp")
     , @NamedQuery(name = "Admin.findByEmail", query = "SELECT a FROM Admin a WHERE a.email = :email")
-    , @NamedQuery(name = "Admin.findByAlamat", query = "SELECT a FROM Admin a WHERE a.alamat = :alamat")})
+    , @NamedQuery(name = "Admin.findByAlamat", query = "SELECT a FROM Admin a WHERE a.alamat = :alamat")
+    , @NamedQuery(name = "Admin.findByPassword", query = "SELECT a FROM Admin a WHERE a.password = :password")
+    , @NamedQuery(name = "Admin.findByHakAkses", query = "SELECT a FROM Admin a WHERE a.hakAkses = :hakAkses")})
 public class Admin implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +50,10 @@ public class Admin implements Serializable {
     private String email;
     @Column(name = "ALAMAT")
     private String alamat;
+    @Column(name = "PASSWORD")
+    private String password;
+    @Column(name = "HAK_AKSES")
+    private String hakAkses;
     @OneToMany(mappedBy = "idAdmin", fetch = FetchType.LAZY)
     private List<Nasabah> nasabahList;
 
@@ -56,6 +62,15 @@ public class Admin implements Serializable {
 
     public Admin(String idAdmin) {
         this.idAdmin = idAdmin;
+    }
+
+    public Admin(String id, String nama, String alamat, String email, String notelp, String pass) {
+        this.idAdmin = id;
+        this.namaAdmin = nama;
+        this.noTelp = notelp;
+        this.email = email;
+        this.alamat = alamat;
+        this.password = pass;
     }
 
     public String getIdAdmin() {
@@ -98,6 +113,22 @@ public class Admin implements Serializable {
         this.alamat = alamat;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getHakAkses() {
+        return hakAkses;
+    }
+
+    public void setHakAkses(String hakAkses) {
+        this.hakAkses = hakAkses;
+    }
+
     @XmlTransient
     public List<Nasabah> getNasabahList() {
         return nasabahList;
@@ -127,6 +158,10 @@ public class Admin implements Serializable {
         return true;
     }
 
+    public void Admin(String idAdmin, String namaAdmin, String noTelp, String email, String alamat, String password){
+        
+    }
+    
     @Override
     public String toString() {
         return "" + idAdmin + "";

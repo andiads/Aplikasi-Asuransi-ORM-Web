@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import tools.BCrypt;
 import tools.HibernateUtil;
 
 /**
@@ -59,6 +60,11 @@ public class AdminDAO implements InterfaceDAO {
     
     public String getAutoID(){
         return (String) fdao.getById("SELECT CONCAT('D', LPAD((TO_NUMBER(SUBSTR(MAX(idAdmin),2,3))+1), 3, '0'))FROM Admin");
+    }
+    
+    public boolean login(String kategori, String Username, String pass){
+        Admin a  = (Admin) search(kategori, Username).get(0);
+        return BCrypt.checkpw(pass, a.getPassword());
     }
 }
 

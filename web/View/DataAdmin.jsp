@@ -4,6 +4,7 @@
     Author     : dbayu
 --%>
 
+<%@page import="tools.BCrypt"%>
 <%@page import="entities.Admin"%>
 <%@page import="DAO.AdminDAO"%>
 <%@page import="java.util.List"%>
@@ -30,14 +31,14 @@
     <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Start Bootstrap</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Home</span>
           </a>
@@ -46,7 +47,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text">Master ASuransi</span>
+            <span class="nav-link-text">Master Admin</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
             <li>
@@ -55,62 +56,10 @@
             <li>
               <a href="dataasuransiservlet">Master Asuransi</a>
             </li>
-            <li>
-              <a href="nasabahServlet">Master Nasabag</a>
-            </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Transaksi Asuransi</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-            <li>
-              <a href="datapembayaranservlet">Pembayaran Asuransi</a>
-            </li>
-            <li>
-              <a href="klaimtoinsert">Klaim Asuransi</a>
-            </li>
-            
-          </ul>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Report</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseMulti">
-            <li>
-              <a href="#">Report Data Nasabah</a>
-            </li>
-            <li>
-              <a href="#">Report Data Pembayaran</a>
-            </li>
-            <li>
-              <a href="#">report Data Klaim</a>
-            </li>
-            
-          </ul>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Other</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseMulti">
-            <li>
-              <a href="#">Help</a>
-            </li>
-            <li>
-              <a href="#">About Us</a>
-            </li>
-            <li>
-              <a href="#">Log Out</a>
-            </li>
-            
-          </ul>
-        </li>
+        
+       
         
         
       </ul>
@@ -241,21 +190,11 @@
                                                 <th>ALAMAT</th>
                                                 <th>E-MAIL</th>
                                                 <th>NO.TELPON</th>
+                                                <th>Hak Akses</th>
                                                 <th ></th>
-                                                <th ></th>
+                                               
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>ID ADMIN</th>
-                                                <th>NAMA ADMIN</th>
-                                                <th>ALAMAT</th>
-                                                <th>E-MAIL</th>
-                                                <th>NO.TELPON</th>
-                                                <th ></th>
-                                                <th ></th>
-                                    </tr>
-                                </tfoot>
                                  <%
                                     //            List<Object> datas = new AdminDAO().getAll();
                                     List<Object> datas = (List<Object>) session.getAttribute("data_admin");
@@ -270,14 +209,16 @@
                                         <td><%=a.getAlamat()%></td>
                                         <td><%=a.getEmail()%></td>
                                         <td><%=a.getNoTelp()%></td>
-                                        <td><a href="adminupdate?id=<%=a.getIdAdmin()%>" >Update</a></td>
-                                        <td><a href="${pageContext.request.contextPath}/admindelete?id=<%=a.getIdAdmin()%>">Delete</a></td>
+                                        <td><%= a.getHakAkses()%></td>
+                                        <td><a href="adminupdate?id=<%=a.getIdAdmin()%>"><i class ="fa fa-edit"></i></a>
+                                           <a href="${pageContext.request.contextPath}/admindelete?id=<%=a.getIdAdmin()%>"><i class="fa fa-trash"></i></a></td>
                                             </tr>
                                             <% }
                                     %>
                                         
                             </table>
-                                         <div class="col-md-6 text-right"><a href="admintoinsert" class="btn btn-primary">Tambah Data</a></div>
+                                         <div class="col-md-1 text-right"><a href="admintoinsert" class="btn btn-primary">Tambah Data</a></div>
+                                         <!--<div class="col-md-6 text-right"><a href="ReportServlet" class="btn btn-primary">Cetak Laporan</a></div>-->
                         </div>
                     </div>
                     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
@@ -309,7 +250,7 @@
                         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="login.html">Logout</a>
+                            <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                         </div>
                     </div>
                 </div>

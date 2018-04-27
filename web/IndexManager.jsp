@@ -1,9 +1,12 @@
+<%-- 
+    Document   : IndexManager
+    Created on : Apr 25, 2018, 9:52:43 PM
+    Author     : dbayu
+--%>
+
+<%@page import="entities.Admin"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
   <meta charset="utf-8">
@@ -11,7 +14,7 @@ and open the template in the editor.
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>Manula Asurance</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -25,87 +28,46 @@ and open the template in the editor.
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+      <a class="navbar-brand" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Manula Asurance</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Home</span>
           </a>
         </li>
         
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text">Master ASuransi</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponents">
-            <li>
-              <a href="dataadminservlet">Master Admin</a>
-            </li>
-            <li>
-              <a href="dataasuransiservlet">Master Asuransi</a>
-            </li>
-            <li>
-              <a href="nasabahServlet">Master Nasabah</a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Transaksi Asuransi</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-            <li>
-              <a href="datapembayaranservlet">Pembayaran Asuransi</a>
-            </li>
-            <li>
-              <a href="klaimtoinsert">Klaim Asuransi</a>
-            </li>
-            
-          </ul>
-        </li>
+       
+        
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Report</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseMulti">
-            <li>
-              <a href="#">Report Data Nasabah</a>
+          <li>
+              <a href="CetakNasabah.jsp">Report Data Nasabah</a>
             </li>
             <li>
-              <a href="#">Report Data Pembayaran</a>
+              <a href="ReportPembayaran.jsp">Report Data Pembayaran</a>
             </li>
             <li>
-              <a href="#">report Data Klaim</a>
+              <a href="ReportNasabahKlaim.jsp">Report Data Klaim</a>
             </li>
-            
+            <li>
+              <a href="CetakAdmin.jsp">Report Data Admin</a>
+            </li>
+              <li>
+              <a href="ReportAsuransiNasabah.jsp">Report Data Asuransi</a>
+            </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Other</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseMulti">
-            <li>
-              <a href="#">Help</a>
-            </li>
-            <li>
-              <a href="#">About Us</a>
-            </li>
-            <li>
-              <a href="#">Log Out</a>
-            </li>
-            
-          </ul>
-        </li>
+        
+        
         
         
       </ul>
@@ -213,67 +175,20 @@ and open the template in the editor.
       </ul>
     </div>
   </nav>
+  <%
+                                    Admin a = (Admin) session.getAttribute("Data");
+
+
+                                %>
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active">My Dashboard</li>
+     
+          <li class="breadcrumb-item active">Hii.. Selamat Datang <%=a.getNamaAdmin()%> </li>
       </ol>
       <!-- Icon Cards-->
-      <div class="row">
-        
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-warning o-hidden h-100">
-            <div class="card-body">
-              <div class="card-body-icon">
-                <i class="fa fa-fw fa-list"></i>
-              </div>
-              <div class="mr-5">Master Form</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="halamanmaster.html">
-              <span class="float-left">Go To Master Menu</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-success o-hidden h-100">
-            <div class="card-body">
-              <div class="card-body-icon">
-                <i class="fa fa-fw fa-shopping-cart"></i>
-              </div>
-              <div class="mr-5">Transaction Form</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="halamantransaksi.html">
-              <span class="float-left"> Go To Transaction Menu</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-danger o-hidden h-100">
-            <div class="card-body">
-              <div class="card-body-icon">
-                <i class="fa fa-fw fa-support"></i>
-              </div>
-              <div class="mr-5">Report Form</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="halamanreport.html">
-              <span class="float-left">Go To Report Menu</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
+      
       
         
            
@@ -311,7 +226,7 @@ and open the template in the editor.
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
+            <a class="btn btn-primary" href="LogoutServlet">Logout</a>
           </div>
         </div>
       </div>

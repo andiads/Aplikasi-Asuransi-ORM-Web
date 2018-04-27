@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,18 +51,22 @@ public class PembayaranInsert extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String nopembayaran = request.getParameter("nmrpembayaran");
-        String tglpembayaran = request.getParameter("tglpembayaran");
-        String jmlpembayaran = request.getParameter("jmlbayar");
-        String nopolis = request.getParameter("nmrpolis");
-        String kodeasuransi = request.getParameter("kodeasuransi");
-        
+
+        String id = request.getParameter("id");
 
         String pesan = "gagal mengubah data";
         RequestDispatcher dispatcher = null;
         PembayaranDAO pdao = new PembayaranDAO();
-        DetailNasabahDAO aO = new DetailNasabahDAO();
         HttpSession session = request.getSession();
+        DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(id);
+        
+        String nopembayaran = pdao.getAutoID();
+        Date currentDate = new Date();
+        LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        
+        String tglpembayaran = localDateTime.toString();
+        double jmlpembayaran = Long.parseLong(dn.getKodeAsuransi().getJmlBayar()+"");
+    
         Date date1 = null;
 
         try {
@@ -69,51 +75,31 @@ public class PembayaranInsert extends HttpServlet {
         } catch (ParseException ex) {
             Logger.getLogger(PembayaranInsert.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         double saldo = 0;
         double totalbunga = 0;
         double totalsaldo = 0;
         try (PrintWriter out = response.getWriter()) {
-            Asuransi a = (Asuransi) new AsuransiDAO().getById(kodeasuransi);
-            double bungaawal = Long.parseLong(a.getBunga()+"");
-            
-            
-            double bunga = bungaawal/100;
-            totalbunga = bunga*Integer.parseInt(jmlpembayaran);
-            totalsaldo = totalbunga+saldo+Integer.parseInt(jmlpembayaran);
-           
-            
-            
+            Asuransi a = (Asuransi) new AsuransiDAO().getById(dn.getKodeAsuransi()+"");
+            double bungaawal = Long.parseLong(a.getBunga() + "");
+
+            double bunga = bungaawal / 100;
+            totalbunga = bunga * jmlpembayaran;
+            totalsaldo = totalbunga + saldo + jmlpembayaran;
+
             BigInteger hasilpembayaran = BigDecimal.valueOf(totalsaldo).toBigInteger();
-            
-//            DetailNasabah detailNasabah = new DetailNasabah();
-            DetailNasabah dn = (DetailNasabah) new DetailNasabahDAO().getById(nopolis);
-            
-//            if (dn.getKodeAsuransi().equals(kodeasuransi)) {
-//                double saldopertama = Long.parseLong(dn.getSaldo()+"");
-//                double hasilsaldo = saldopertama + totalsaldo;
-//                
-//                BigInteger inputsaldo = BigDecimal.valueOf(hasilsaldo).toBigInteger();
-//                
-//                detailNasabah.setSaldo(inputsaldo);
-//                
-//               
-            
-                
-                
-                Pembayaran pembayaran = new Pembayaran();
+
+            Pembayaran pembayaran = new Pembayaran();
             pembayaran.setNoPembayaran(nopembayaran);
             pembayaran.setTglPembayaran(date1);
-            pembayaran.setNoPolis(new Nasabah(nopolis));
-            pembayaran.setKodeAsuransi(new Asuransi(kodeasuransi));
+            pembayaran.setNoPolis(new Nasabah(dn.getNoPolis()+""));
+            pembayaran.setKodeAsuransi(new Asuransi(dn.getKodeAsuransi()+""));
             pembayaran.setJumlahBayar(hasilpembayaran);
             if (pdao.insert(pembayaran)) {
                 pesan = "berhasil mengubah data dengan ID : " + pembayaran.getNoPembayaran();
 
             }
-//            }
-            
-            
+
             session.setAttribute("pesaninsert", pesan);
             dispatcher = request.getRequestDispatcher("datapembayaranservlet");
             dispatcher.include(request, response);

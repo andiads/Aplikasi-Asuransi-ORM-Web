@@ -4,6 +4,8 @@
     Author     : dbayu
 --%>
 
+<%@page import="entities.Asuransi"%>
+<%@page import="DAO.AsuransiDAO"%>
 <%@page import="entities.Admin"%>
 <%@page import="DAO.AdminDAO"%>
 <%@page import="java.util.List"%>
@@ -31,14 +33,14 @@
     <body class="fixed-nav sticky-footer bg-dark" id="page-top">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">Start Bootstrap</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="LoginServlet?idAdmin=<%=session.getAttribute("err")%>&password=<%=session.getAttribute("pass")%>">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">Home</span>
                         </a>
@@ -232,17 +234,21 @@
                <%
              
             String nasabah = (String) session.getAttribute("autoIDNasabah");
+            String id = (String) session.getAttribute("err");
+            Admin admin = (Admin) new AdminDAO().getById(id);
+            
             %>
-                <form name="formupdate" action="${pageContext.request.contextPath}/nasabahinsert" method="POST">
+            <form name="formupdate" action="${pageContext.request.contextPath}/nasabahinsert" method="POST">
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess">Nomor Polis</label>
+                        <input class="form-control" name="nmrpolis"  type="text" 
+                               value="<%=nasabah%>"     ></div>
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">NIK</label>
                        <input class="form-control" name="nik"  
                                            type="text" value="">
                     </div>
-                    <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess">Nomor Polis</label>
-                        <input class="form-control" name="nmrpolis" readonly="true" type="text" 
-                               value="<%=nasabah%>"     ></div>
+                    
                     <div class="form-group has-success">
                         <label class="control-label" for="inputSuccess">Nama Nasabah</label>
                        <input class="form-control" name="nmnasabah" type="text" 
@@ -269,16 +275,31 @@
                         <input class="form-control" name="penghasilan" type="text" 
                                            value=""     ></div>
                     <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess">Asuransi</label>
+                    
+                        <select name="kdasuransi" >
+                                        <% List<Object> datas3 = new AsuransiDAO().getAll();
+                                            for (Object data : datas3) {
+                                                Asuransi asuransi = (Asuransi) data;
+//                                                                                     %>
+                                        <option value="<%= asuransi.getKodeAsuransi()%>">
+                                            <%=asuransi.getJenisAsuransi()%>, dengan Cicilan: Rp.
+                                            <%=asuransi.getJmlBayar()%>/bulan</option>
+                                            <%
+                                                }
+                                            %>
+                                    </select></div>
+                                    
+                    <div class="form-group has-success ">
                         <label class="control-label" for="inputSuccess">Admin</label>
-                        <select name="idadmin" class="form-control">
-                                            <% List<Object> datas2 = new AdminDAO().getAll();
-                                                for (Object data : datas2){
-                                                    Admin admin = (Admin) data; %>
-                                                    <option value="<%= admin.getIdAdmin()%>"><%= admin.getIdAdmin()%>
-                                                        -<%= admin.getNamaAdmin()%></option>
-                                                    <%
-                                                } %>
-                                            </select>
+                        <div class="row show-grid">
+                             <div class="col-md-2">
+                                 <input class="form-control" name="idadmin" type="text" readonly="true" value="<%=admin.getIdAdmin()%>"     >
+                             </div>
+                              <div class="col-md-10">
+                        <input class="form-control" name="ttes" type="text" readonly="true" value="<%=admin.getNamaAdmin()%>"     >
+                              </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-default">Submit </button>
                 </form>
@@ -320,7 +341,7 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                     </div>
                 </div>
             </div>
